@@ -5,11 +5,11 @@ import TimerEvent = Phaser.Time.TimerEvent;
 export class Hero extends GameObjects.Sprite {
   static MOVE_SPEED: number = 0.4;
   static MOVE_SPEED_SLOW: number = 0.2;
-  static STAMINA_DRAIN: number = 0.05;
+  static STAMINA_DRAIN: number = 0.8; //0.05;
 
   static ACTION_WALKING: number = 1;
   static ACTION_ATTACKING: number = 2;
-  static ACTION_LEAVING: number = 2;
+  static ACTION_LEAVING: number = 3;
 
   path: Path;
   follower: any;
@@ -114,6 +114,33 @@ export class Hero extends GameObjects.Sprite {
 
       case Hero.ACTION_LEAVING:
         // TODO - play teleport animation, then remove
+        if (this.anims.currentAnim.key !== 'hero-teleport') {
+          let anim = this.anims.play('hero-teleport');
+
+          //sprite.on('animationrepeat-walk', function () {
+
+          this.on('animationcomplete', () => {
+            this.setTintFill(0xfbb040, 0xfbb040, 0xffffff, 0xffffff);
+
+            this.scene.tweens.add({
+              targets: this,
+              alphaBottomLeft: 0,
+              alphaBottomRight: 0,
+              ease: 'Quad.easeIn',
+              duration: 500
+            });
+
+            this.scene.tweens.add({
+              targets: this,
+              alphaTopLeft: 0,
+              alphaTopRight: 0,
+              ease: 'Quad.easeIn',
+              duration: 500,
+              delay: 500,
+              onComplete: this.onTeleport.bind(this),
+            });
+          }, this);
+        }
 
         //hero.setTintFill(0xfbb040, 0xfbb040, 0xffffff, 0xffffff);
         //hero.setAlpha(1, 1, 0, 0)
@@ -142,5 +169,9 @@ export class Hero extends GameObjects.Sprite {
 
   removeSlow() {
     this.slowed = false;
+  }
+
+  onTeleport() {
+    this.destroy();
   }
 }

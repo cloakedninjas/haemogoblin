@@ -25,6 +25,13 @@
         "frameWidth": 90,
         "frameHeight": 134
       }
+    },
+    "hero-teleport": {
+      "file": "hero-teleport.png",
+      "frameConfig": {
+        "frameWidth": 100,
+        "frameHeight": 138
+      }
     }
   },
   "audio": {},
