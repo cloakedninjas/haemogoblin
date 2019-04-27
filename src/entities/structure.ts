@@ -8,10 +8,7 @@ export class Structure extends GameObjects.Sprite {
   placed: boolean;
   attackRange: number;
   attackTimer: TimerEvent;
-  mapPosition: {
-    x: number,
-    y: number
-  };
+  mapPosition: Vector2Like;
 
   constructor(scene: Scene, x: number, y: number, sprite) {
     super(scene, x, y, sprite);
@@ -21,6 +18,8 @@ export class Structure extends GameObjects.Sprite {
   }
 
   place(x: number, y: number) {
+    this.depth = this.y + (this.height * this.originY);
+
     this.placed = true;
     this.mapPosition = {x, y};
     this.disableInteractive();

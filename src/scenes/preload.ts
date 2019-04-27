@@ -111,7 +111,11 @@ export class Preload extends Scene {
         const assetVars = manifest[fileType][key];
         const url = fileType + '/' + assetVars['file']; //'assets/'
 
-        this.load[fileType](key, url);
+        if (fileType === 'spritesheet') {
+          this.load[fileType](key, url, assetVars.frameConfig);
+        } else {
+          this.load[fileType](key, url);
+        }
       });
     });
   }
