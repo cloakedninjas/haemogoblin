@@ -135,6 +135,8 @@ export class Dungeon extends Scene {
   }
 
   update(time, delta) {
+    const heroesLeftAlive = [];
+
     this.heros.forEach((hero) => {
       const {x, y} = this.pixelToTile(hero.x, hero.y);
 
@@ -146,7 +148,13 @@ export class Dungeon extends Scene {
           structure.isHeroInRange(hero);
         });
       });
+
+      if (hero.health > 0) {
+        heroesLeftAlive.push(hero);
+      }
     });
+
+    this.heros = heroesLeftAlive;
 
     this.graphics.clear();
     this.graphics.lineStyle(2, 0xffff00, 1);

@@ -5,16 +5,23 @@ import TimerEvent = Phaser.Time.TimerEvent;
 export class Hero extends GameObjects.Sprite {
   static MOVE_SPEED: number = 0.00005;
   static MOVE_SPEED_SLOW: number = 0.00002;
+  static STAMINA_DRAIN: number = 0.05;
+
+  static ACTION_WALKING: number = 1;
+  static ACTION_ATTACKING: number = 2;
+  static ACTION_LEAVING: number = 2;
 
   path: Path;
   follower: any;
   health: number;
+  stamina: number;
   mapPosition: {
     x: number,
     y: number
   };
   slowed: boolean;
   slowTimer: TimerEvent;
+  action: number;
 
   constructor(scene: Scene, x: number, y: number, path: Path) {
     super(scene, x, y, 'hero');
@@ -22,7 +29,9 @@ export class Hero extends GameObjects.Sprite {
     this.follower = {t: 0, vec: new Phaser.Math.Vector2()};
     this.path = path;
     this.health = 100;
+    this.stamina = 100;
     this.slowed = false;
+    this.action = Hero.ACTION_WALKING;
     this.mapPosition = {
       x: 0,
       y: 0
@@ -44,25 +53,46 @@ export class Hero extends GameObjects.Sprite {
   }
 
   update(time, delta, x, y) {
-    this.mapPosition.x = x;
-    this.mapPosition.y = y;
+    switch (this.action) {
+      case Hero.ACTION_WALKING:
+        let walkSpeed;
 
-    if (this.slowed) {
-      this.follower.t += Hero.MOVE_SPEED_SLOW * delta;
-    } else {
-      this.follower.t += Hero.MOVE_SPEED * delta;
-    }
+        this.mapPosition.x = x;
+        this.mapPosition.y = y;
 
-    // get the new x and y coordinates in vec
-    this.path.getPoint(this.follower.t, this.follower.vec);
+        if (this.slowed) {
+          walkSpeed = Hero.MOVE_SPEED_SLOW * delta;
+        } else {
+          walkSpeed = Hero.MOVE_SPEED * delta;
+        }
 
-    // update enemy x and y to the newly obtained x and y
-    this.setPosition(this.follower.vec.x, this.follower.vec.y);
+        if (this.stamina > 0) {
+          this.stamina -= Hero.STAMINA_DRAIN;
 
-    // if we have reached the end of the path, remove the enemy
-    if (this.follower.t >= 1) {
-      this.setActive(false);
-      this.setVisible(false);
+          this.follower.t += walkSpeed;
+
+          // get the new x and y coordinates in vec
+          this.path.getPoint(this.follower.t, this.follower.vec);
+
+          // update enemy x and y to the newly obtained x and y
+          this.setPosition(this.follower.vec.x, this.follower.vec.y);
+
+          // if we have reached the end of the path, remove the enemy
+          if (this.follower.t >= 1) {
+            this.action = Hero.ACTION_ATTACKING;
+          }
+        } else {
+          this.action = Hero.ACTION_LEAVING;
+        }
+        break;
+
+      case Hero.ACTION_ATTACKING:
+        // TODO - play attac animation, drain stamina
+        break;
+
+      case Hero.ACTION_LEAVING:
+        // TODO - play teleport animation, then remove
+        break;
     }
   }
 
@@ -86,7 +116,6 @@ export class Hero extends GameObjects.Sprite {
   }
 
   removeSlow() {
-    console.log('removing slow');
     this.slowed = false;
   }
 }
