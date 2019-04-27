@@ -1,16 +1,17 @@
 import Scene = Phaser.Scene;
 import {Structure} from "./structure";
 import TimerEvent = Phaser.Time.TimerEvent;
+import {Hero} from "./hero";
 
 export class Trap extends Structure {
   static DAMAGE: number = 11;
 
   triggered: boolean;
   placed: boolean;
-  shootTimer: TimerEvent;
 
   constructor(scene: Scene, x: number, y: number) {
     super(scene, x, y, 'spike');
+    this.attackRange = 1;
   }
 
   place(x, y) {
@@ -19,22 +20,20 @@ export class Trap extends Structure {
   }
 
   trigger() {
-    const config = {
-      delay: 500, callback: this.attack, callbackScope: this, repeat: 2
-    };
-
-    if (!this.shootTimer) {
+    if (!this.attackTimer) {
       this.attack();
-      this.shootTimer = this.scene.time.addEvent(config);
+      this.attackTimer = this.scene.time.addEvent({
+        delay: 500, callback: this.attack, callbackScope: this, repeat: 2
+      });
     } else {
-      this.shootTimer.repeatCount = 2;
+      this.attackTimer.repeatCount = 2;
     }
   }
 
   reset() {
     console.log('stopped attacking');
-    this.shootTimer.destroy();
-    this.shootTimer = null;
+    this.attackTimer.destroy();
+    this.attackTimer = null;
   }
 
   attack() {

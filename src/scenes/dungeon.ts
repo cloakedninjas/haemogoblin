@@ -28,6 +28,7 @@ export class Dungeon extends Scene {
   trapButton: Sprite;
   towerButton: Sprite;
   gold: number;
+  blood: number;
 
   constructor() {
     super({
@@ -102,13 +103,7 @@ export class Dungeon extends Scene {
     this.add.existing(hero);
     hero.startOnPath();
 
-    // add mouse control
-    //this.game.input.setPollOnMove
-    //this.input.setPollOnMove();
-
-    /*this.input.on('pointermove', (pointer) => {
-      console.log(pointer.x, pointer.y);
-    });*/
+    this.blood = 0;
 
     this.mapBg.setInteractive();
 
@@ -145,9 +140,12 @@ export class Dungeon extends Scene {
 
       hero.update(time, delta, x, y);
 
-      if (this.structures[x][y]) {
-        this.structures[x][y].trigger();
-      }
+      // check if any structures are in range
+      this.structures.forEach((row) => {
+        row.forEach((structure) => {
+          structure.isHeroInRange(hero);
+        });
+      });
     });
 
     this.graphics.clear();
@@ -205,21 +203,24 @@ export class Dungeon extends Scene {
   onStructureAttack(data) {
     const structure: Structure = data.structure;
 
-    let heroesLeftAlive = [];
+    if (structure instanceof Trap) {
+      let heroesLeftAlive = [];
 
-    this.heros.forEach((hero) => {
-      let stillAlive = true;
+      this.heros.forEach((hero) => {
+        let stillAlive = true;
 
-      if (hero.mapPosition.x === structure.mapPosition.x && hero.mapPosition.y === structure.mapPosition.y) {
-        stillAlive = hero.damage(data.damage);
-      }
+        if (hero.mapPosition.x === structure.mapPosition.x && hero.mapPosition.y === structure.mapPosition.y) {
+          stillAlive = hero.damage(data.damage);
+          this.blood += data.damage;
+        }
 
-      if (stillAlive) {
-        heroesLeftAlive.push(hero);
-      }
-    });
+        if (stillAlive) {
+          heroesLeftAlive.push(hero);
+        }
+      });
 
-    this.heros = heroesLeftAlive;
+      this.heros = heroesLeftAlive;
+    }
   }
 
   pixelToTile(x: number, y: number) {

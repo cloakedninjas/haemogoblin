@@ -1,8 +1,10 @@
 import {GameObjects, Scene} from 'phaser';
 import Path = Phaser.Curves.Path;
+import TimerEvent = Phaser.Time.TimerEvent;
 
 export class Hero extends GameObjects.Sprite {
   static MOVE_SPEED: number = 0.00005;
+  static MOVE_SPEED_SLOW: number = 0.00002;
 
   path: Path;
   follower: any;
@@ -11,6 +13,8 @@ export class Hero extends GameObjects.Sprite {
     x: number,
     y: number
   };
+  slowed: boolean;
+  slowTimer: TimerEvent;
 
   constructor(scene: Scene, x: number, y: number, path: Path) {
     super(scene, x, y, 'hero');
@@ -18,10 +22,15 @@ export class Hero extends GameObjects.Sprite {
     this.follower = {t: 0, vec: new Phaser.Math.Vector2()};
     this.path = path;
     this.health = 100;
+    this.slowed = false;
     this.mapPosition = {
       x: 0,
       y: 0
-    }
+    };
+
+    this.slowTimer = this.scene.time.addEvent({
+      delay: 3000, callback: this.removeSlow, callbackScope: this, paused: true, loop: true
+    });
   }
 
   startOnPath() {
@@ -38,7 +47,11 @@ export class Hero extends GameObjects.Sprite {
     this.mapPosition.x = x;
     this.mapPosition.y = y;
 
-    this.follower.t += Hero.MOVE_SPEED * delta;
+    if (this.slowed) {
+      this.follower.t += Hero.MOVE_SPEED_SLOW * delta;
+    } else {
+      this.follower.t += Hero.MOVE_SPEED * delta;
+    }
 
     // get the new x and y coordinates in vec
     this.path.getPoint(this.follower.t, this.follower.vec);
@@ -65,5 +78,15 @@ export class Hero extends GameObjects.Sprite {
     }
 
     return true;
+  }
+
+  slow() {
+    this.slowed = true;
+    this.slowTimer.paused = false;
+  }
+
+  removeSlow() {
+    console.log('removing slow');
+    this.slowed = false;
   }
 }
