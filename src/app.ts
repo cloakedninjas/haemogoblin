@@ -1,29 +1,22 @@
-import {Game} from './game';
-import {Game as GameScene} from './scenes/game';
+import {Shop as ShopScene} from './scenes/shop';
+import {Dungeon as DungeonScene} from './scenes/dungeon';
 import {Preload} from './scenes/preload';
 
 const config: GameConfig = {
-  title: 'Demo Game',
+  title: 'LD44',
 
-  scene: [Preload, GameScene],
+  scene: [Preload, ShopScene, DungeonScene],
   backgroundColor: '#333',
-  resolution: window.devicePixelRatio,
+  // resolution: window.devicePixelRatio,
   scale: {
-    mode: Phaser.Scale.ENVELOP,
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
     parent: 'game-container',
-    width: 800,
-    height: 600,
-    min: {
-      width: 800,
-      height: 600,
-    },
-    max: {
-      width: 1600,
-      height: 1200,
-    },
+    width: 1280,
+    height: 720,
   },
 };
 
 window.addEventListener('load', () => {
-  window['game'] = new Game(config);
+  window['game'] = new Phaser.Game(config);
 });

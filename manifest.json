@@ -1,8 +1,17 @@
 {
   "image": {
-    "test-file": {
-      "file": "test.png",
+    "map": {
+      "file": "map template.png",
       "size": 85726
+    },
+    "hero": {
+      "file": "hero.png"
+    },
+    "spike": {
+      "file": "spike trap.png"
+    },
+    "tower": {
+      "file": "crossbow.png"
     }
   },
   "audio": {},

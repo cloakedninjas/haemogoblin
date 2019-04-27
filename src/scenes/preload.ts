@@ -109,10 +109,14 @@ export class Preload extends Scene {
     Object.keys(manifest).forEach((fileType: string) => {
       Object.keys(manifest[fileType]).forEach((key) => {
         const assetVars = manifest[fileType][key];
-        const url = 'assets/' + fileType + '/' + assetVars['file'];
+        const url = fileType + '/' + assetVars['file']; //'assets/'
 
         this.load[fileType](key, url);
       });
     });
+  }
+
+  create() {
+    this.scene.start('DungeonScene');
   }
 }
