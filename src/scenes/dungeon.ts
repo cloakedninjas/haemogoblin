@@ -23,8 +23,8 @@ export class Dungeon extends Scene {
   graphics: Phaser.GameObjects.Graphics;
   heroPath: Phaser.Curves.Path;
   heros: Hero[];
-  structures: Structure[];
-  newStructure: Trap;
+  structures: Structure[][];
+  newStructure: Structure;
   trapButton: Sprite;
   towerButton: Sprite;
   gold: number;
@@ -92,6 +92,10 @@ export class Dungeon extends Scene {
     this.heros = [];
     this.structures = [];
 
+    this.map.forEach(() => {
+      this.structures.push(new Array(Dungeon.MAP_WIDTH));
+    });
+
     const hero = new Hero(this, coords[0][0], coords[0][1], this.heroPath);
     this.heros.push(hero);
 
@@ -137,7 +141,13 @@ export class Dungeon extends Scene {
 
   update(time, delta) {
     this.heros.forEach((hero) => {
-      hero.update(time, delta);
+      const {x, y} = this.pixelToTile(hero.x, hero.y);
+
+      hero.update(time, delta, x, y);
+
+      if (this.structures[x][y]) {
+        this.structures[x][y].trigger();
+      }
     });
 
     this.graphics.clear();
@@ -160,22 +170,19 @@ export class Dungeon extends Scene {
 
   onObjectUp(pointer: Pointer, gameObject: GameObject) {
     if (this.newStructure) {
-      const mapX = pointer.worldX - Dungeon.GRID_OFFSET_X;
-      const mapY = pointer.worldY - Dungeon.GRID_OFFSET_Y;
+      const {x, y} = this.pixelToTile(pointer.x, pointer.y);
 
-      const gridX = Math.floor(mapX / Dungeon.GRID_SIZE);
-      const gridY = Math.floor(mapY / Dungeon.GRID_SIZE);
-
-      const canPlace = (this.newStructure instanceof Trap && this.map[gridX][gridY] === Dungeon.TRAP_PLACEABLE) ||
-        (this.newStructure instanceof Tower && this.map[gridX][gridY] === Dungeon.TOWER_PLACEABLE);
+      const canPlace = (this.newStructure instanceof Trap && this.map[x][y] === Dungeon.TRAP_PLACEABLE) ||
+        (this.newStructure instanceof Tower && this.map[x][y] === Dungeon.TOWER_PLACEABLE);
 
       if (canPlace) {
         const halfGrid = Dungeon.GRID_SIZE / 2;
         this.newStructure.setPosition(
-          gridX * Dungeon.GRID_SIZE + halfGrid + Dungeon.GRID_OFFSET_X,
-          gridY * Dungeon.GRID_SIZE + halfGrid + Dungeon.GRID_OFFSET_Y);
-        this.newStructure.place();
-        this.structures.push(this.newStructure);
+          x * Dungeon.GRID_SIZE + halfGrid + Dungeon.GRID_OFFSET_X,
+          y * Dungeon.GRID_SIZE + halfGrid + Dungeon.GRID_OFFSET_Y);
+        this.newStructure.place(x, y);
+        this.newStructure.on(Structure.EVENT_ATTACK, this.onStructureAttack, this);
+        this.structures[x][y] = this.newStructure;
 
         this.newStructure = null;
       } else {
@@ -193,5 +200,38 @@ export class Dungeon extends Scene {
   createTower() {
     this.newStructure = new Tower(this, 0, 0);
     this.add.existing(this.newStructure);
+  }
+
+  onStructureAttack(data) {
+    const structure: Structure = data.structure;
+
+    let heroesLeftAlive = [];
+
+    this.heros.forEach((hero) => {
+      let stillAlive = true;
+
+      if (hero.mapPosition.x === structure.mapPosition.x && hero.mapPosition.y === structure.mapPosition.y) {
+        stillAlive = hero.damage(data.damage);
+      }
+
+      if (stillAlive) {
+        heroesLeftAlive.push(hero);
+      }
+    });
+
+    this.heros = heroesLeftAlive;
+  }
+
+  pixelToTile(x: number, y: number) {
+    const mapX = x - Dungeon.GRID_OFFSET_X;
+    const mapY = y - Dungeon.GRID_OFFSET_Y;
+
+    /*const gridX = Math.floor(mapX / Dungeon.GRID_SIZE);
+    const gridY = Math.floor(mapY / Dungeon.GRID_SIZE);*/
+
+    return {
+      x: Math.floor(mapX / Dungeon.GRID_SIZE),
+      y: Math.floor(mapY / Dungeon.GRID_SIZE)
+    }
   }
 }

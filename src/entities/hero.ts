@@ -2,16 +2,26 @@ import {GameObjects, Scene} from 'phaser';
 import Path = Phaser.Curves.Path;
 
 export class Hero extends GameObjects.Sprite {
-  static MOVE_SPEED: number = 0.0001;
+  static MOVE_SPEED: number = 0.00005;
 
   path: Path;
   follower: any;
+  health: number;
+  mapPosition: {
+    x: number,
+    y: number
+  };
 
   constructor(scene: Scene, x: number, y: number, path: Path) {
     super(scene, x, y, 'hero');
 
     this.follower = {t: 0, vec: new Phaser.Math.Vector2()};
     this.path = path;
+    this.health = 100;
+    this.mapPosition = {
+      x: 0,
+      y: 0
+    }
   }
 
   startOnPath() {
@@ -24,7 +34,10 @@ export class Hero extends GameObjects.Sprite {
     this.setPosition(this.follower.vec.x, this.follower.vec.y);
   }
 
-  update(time, delta) {
+  update(time, delta, x, y) {
+    this.mapPosition.x = x;
+    this.mapPosition.y = y;
+
     this.follower.t += Hero.MOVE_SPEED * delta;
 
     // get the new x and y coordinates in vec
@@ -38,5 +51,19 @@ export class Hero extends GameObjects.Sprite {
       this.setActive(false);
       this.setVisible(false);
     }
+  }
+
+  damage(dmg: number) {
+    this.health -= dmg;
+
+    console.log('ouchies', this.health);
+
+    if (this.health <= 0) {
+      console.log('he dead...');
+      this.destroy();
+      return false;
+    }
+
+    return true;
   }
 }
