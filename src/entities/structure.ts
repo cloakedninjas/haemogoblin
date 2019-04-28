@@ -7,6 +7,7 @@ export class Structure extends GameObjects.Sprite {
   static EVENT_ATTACK: string = 'attack';
   placed: boolean;
   attackRange: number;
+  canAttack: boolean;
   attackTimer: TimerEvent;
   mapPosition: Vector2Like;
 
@@ -15,6 +16,7 @@ export class Structure extends GameObjects.Sprite {
 
     this.placed = false;
     this.attackRange = 0;
+    this.refreshAttack();
   }
 
   place(x: number, y: number) {
@@ -34,5 +36,9 @@ export class Structure extends GameObjects.Sprite {
 
       this.trigger(hero);
     }
+  }
+
+  refreshAttack() {
+    this.canAttack = true;
   }
 }

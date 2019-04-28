@@ -150,6 +150,7 @@ export class Hero extends GameObjects.Sprite {
 
     if (this.health <= 0) {
       console.log('he dead...');
+
       this.destroy();
       return false;
     }

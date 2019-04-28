@@ -25,7 +25,7 @@ export class Dungeon extends Scene {
   mapBg: Phaser.GameObjects.Image;
   graphics: Phaser.GameObjects.Graphics;
   heroPath: Phaser.Curves.Path;
-  heros: Hero[];
+  heroes: Hero[];
   structures: Structure[][];
   newStructure: Structure;
   trapButton: Sprite;
@@ -112,7 +112,7 @@ export class Dungeon extends Scene {
       }
     });
 
-    this.heros = [];
+    this.heroes = [];
     this.structures = [];
 
     this.map.forEach(() => {
@@ -174,9 +174,7 @@ export class Dungeon extends Scene {
   }
 
   update(time, delta) {
-    const heroesLeftAlive = [];
-
-    this.heros.forEach((hero) => {
+    this.heroes.forEach((hero) => {
       const {x, y} = this.pixelToTile(hero.x, hero.y);
 
       hero.update(time, delta, x, y);
@@ -187,13 +185,7 @@ export class Dungeon extends Scene {
           structure.isHeroInRange(hero);
         });
       });
-
-      if (hero.health > 0) {
-        heroesLeftAlive.push(hero);
-      }
     });
-
-    this.heros = heroesLeftAlive;
 
     this.graphics.clear();
     this.graphics.lineStyle(2, 0xffff00, 1);
@@ -243,7 +235,7 @@ export class Dungeon extends Scene {
     hero.on(Phaser.GameObjects.Events.DESTROY, this.onHeroDestroy.bind(this, hero));
     hero.startOnPath();
 
-    this.heros.push(hero);
+    this.heroes.push(hero);
     this.add.existing(hero);
   }
 
@@ -274,7 +266,7 @@ export class Dungeon extends Scene {
     const structure: Structure = data.structure;
 
     if (structure instanceof Trap) {
-      this.heros.forEach((hero) => {
+      this.heroes.forEach((hero) => {
         if (hero.mapPosition.x === structure.mapPosition.x && hero.mapPosition.y === structure.mapPosition.y) {
           hero.damage(data.damage);
           this.collectBlood(data.damage);
@@ -284,8 +276,8 @@ export class Dungeon extends Scene {
   }
 
   onHeroDestroy(hero: Hero) {
-    const index = this.heros.indexOf(hero);
-    this.heros.splice(index, 1);
+    const index = this.heroes.indexOf(hero);
+    this.heroes.splice(index, 1);
   }
 
   pixelToTile(x: number, y: number) {

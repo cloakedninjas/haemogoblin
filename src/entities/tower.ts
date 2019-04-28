@@ -5,7 +5,6 @@ import Sprite = Phaser.GameObjects.Sprite;
 
 export class Tower extends Structure {
   placed: boolean;
-  canAttack: boolean;
   web: Sprite;
 
   constructor(scene: Scene, x: number, y: number) {
@@ -17,8 +16,6 @@ export class Tower extends Structure {
     this.web.tint = 0x334455;
     this.web.setScale(0.3);
     scene.add.existing(this.web);
-
-    this.refreshAttack();
   }
 
   trigger(hero: Hero) {
@@ -53,10 +50,4 @@ export class Tower extends Structure {
       }
     });
   }
-
-  refreshAttack() {
-    this.canAttack = true;
-  }
-
-
 }
