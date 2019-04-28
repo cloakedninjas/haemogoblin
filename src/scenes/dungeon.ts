@@ -134,7 +134,7 @@ export class Dungeon extends Scene {
       this.trapButton.clearTint();
     });
 
-    this.towerButton = this.add.sprite(698, 674, 'tower');
+    this.towerButton = this.add.sprite(698, 674, 'tower', 1);
     this.towerButton.setInteractive();
 
     this.towerButton.on('pointerover', () => {
@@ -149,7 +149,7 @@ export class Dungeon extends Scene {
 
     this.spawnHero();
 
-    setTimeout(this.spawnHero.bind(this), 5000);
+    //setTimeout(this.spawnHero.bind(this), 5000);
   }
 
   update(time, delta) {

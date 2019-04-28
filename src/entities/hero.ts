@@ -163,7 +163,6 @@ export class Hero extends GameObjects.Sprite {
           this.anims.play('hero-teleport');
 
           this.on('animationcomplete', () => {
-            console.log('I am here');
             this.setTintFill(0xfbb040, 0xfbb040, 0xffffff, 0xffffff);
 
             this.scene.tweens.add({

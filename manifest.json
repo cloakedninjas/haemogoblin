@@ -13,8 +13,8 @@
     "full-glassbottle": {
       "file": "full-glassbottle.png"
     },
-    "tower": {
-      "file": "crossbow.png"
+    "spider-web": {
+      "file": "spider-web.png"
     }
   },
   "spritesheet": {
@@ -44,6 +44,13 @@
       "frameConfig": {
         "frameWidth": 90,
         "frameHeight": 91
+      }
+    },
+    "tower": {
+      "file": "spider.png",
+      "frameConfig": {
+        "frameWidth": 90,
+        "frameHeight": 90
       }
     }
   },

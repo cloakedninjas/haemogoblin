@@ -11,8 +11,8 @@ export class Structure extends GameObjects.Sprite {
   attackTimer: TimerEvent;
   mapPosition: Vector2Like;
 
-  constructor(scene: Scene, x: number, y: number, sprite) {
-    super(scene, x, y, sprite);
+  constructor(scene: Scene, x: number, y: number, sprite, frame?) {
+    super(scene, x, y, sprite, frame);
 
     this.placed = false;
     this.attackRange = 0;
