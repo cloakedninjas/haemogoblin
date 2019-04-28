@@ -225,6 +225,8 @@ export class Hero extends GameObjects.Sprite {
 
       if (this.health <= 0) {
         this.action = Hero.ACTION_DYING;
+        this.healtBar.destroy();
+        this.staminaBar.destroy();
       }
     }
 
@@ -252,12 +254,5 @@ export class Hero extends GameObjects.Sprite {
 
   onTeleport() {
     this.destroy();
-  }
-
-  destroy(fromScene?) {
-    super.destroy(fromScene);
-
-    this.healtBar.destroy(fromScene);
-    this.staminaBar.destroy(fromScene);
   }
 }

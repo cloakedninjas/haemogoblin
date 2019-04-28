@@ -68,7 +68,7 @@ export class Dungeon extends Scene {
 
     // define hero path
 
-    this.graphics = this.add.graphics();
+    //this.graphics = this.add.graphics();
     this.heroPath = this.add.path(0, 0);
 
     const coords = [
@@ -177,10 +177,10 @@ export class Dungeon extends Scene {
       });
     });
 
-    this.graphics.clear();
-    this.graphics.lineStyle(2, 0xffff00, 1);
+    //this.graphics.clear();
+    //this.graphics.lineStyle(2, 0xffff00, 1);
 
-    this.heroPath.draw(this.graphics);
+    //this.heroPath.draw(this.graphics);
 
     if (this.newStructure) {
       this.newStructure.setPosition(this.input.activePointer.worldX, this.input.activePointer.worldY);
