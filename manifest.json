@@ -4,6 +4,15 @@
       "file": "map template.png",
       "size": 85726
     },
+    "ui-bar": {
+      "file": "ui-bar.png"
+    },
+    "empty-glassbottle": {
+      "file": "empty-glassbottle.png"
+    },
+    "full-glassbottle": {
+      "file": "full-glassbottle.png"
+    },
     "spike": {
       "file": "spike trap.png"
     },

@@ -6,6 +6,7 @@ import Sprite = Phaser.GameObjects.Sprite;
 import {Trap} from "../entities/trap";
 import {Tower} from "../entities/tower";
 import {Structure} from "../entities/structure";
+import Graphics = Phaser.GameObjects.Graphics;
 
 export class Dungeon extends Scene {
   static GRID_SIZE: number = 90;
@@ -18,6 +19,8 @@ export class Dungeon extends Scene {
   static TOWER_PLACEABLE: number = 1;
   static NOT_PLACEABLE: number = 2;
 
+  static BLOOD_COLLECT_RATIO: number = 0.2;
+
   map: number[][];
   mapBg: Phaser.GameObjects.Image;
   graphics: Phaser.GameObjects.Graphics;
@@ -27,8 +30,11 @@ export class Dungeon extends Scene {
   newStructure: Structure;
   trapButton: Sprite;
   towerButton: Sprite;
+  filledBloodBottle: Sprite;
+  filledBottleMask: Graphics;
   gold: number;
-  blood: number;
+  bloodCollected: number;
+  playerHealth: number;
 
   constructor() {
     super({
@@ -113,13 +119,32 @@ export class Dungeon extends Scene {
       this.structures.push(new Array(Dungeon.MAP_WIDTH));
     });
 
-    this.blood = 0;
+    this.bloodCollected = 0;
 
     this.mapBg.setInteractive();
 
     this.input.on('gameobjectdown', this.onObjectDown.bind(this));
 
-    this.trapButton = this.add.sprite(300, 650, 'spike');
+    // ui
+
+    const uiPanel = this.add.image(450, this.cameras.main.height, 'ui-bar');
+    uiPanel.setOrigin(0, 1);
+
+    const emptyBottle = this.add.image(306, this.cameras.main.height, 'empty-glassbottle');
+    emptyBottle.setOrigin(0, 1);
+
+    this.filledBloodBottle = this.add.sprite(306, this.cameras.main.height, 'full-glassbottle');
+    this.filledBloodBottle.setOrigin(0, 1);
+
+    this.filledBottleMask = this.make.graphics(undefined);
+
+    this.filledBottleMask.fillStyle(0xffffff);
+    this.filledBottleMask.beginPath();
+
+    this.filledBloodBottle.setMask(this.filledBottleMask.createGeometryMask());
+    // buttons
+
+    this.trapButton = this.add.sprite(500, 650, 'spike');
     this.trapButton.setInteractive();
 
     this.trapButton.on('pointerover', () => {
@@ -130,7 +155,7 @@ export class Dungeon extends Scene {
       this.trapButton.clearTint();
     });
 
-    this.towerButton = this.add.sprite(400, 650, 'tower');
+    this.towerButton = this.add.sprite(600, 650, 'tower');
     this.towerButton.setInteractive();
 
     this.towerButton.on('pointerover', () => {
@@ -145,7 +170,7 @@ export class Dungeon extends Scene {
 
     this.spawnHero();
 
-    setTimeout(this.spawnHero.bind(this), 3000);
+    setTimeout(this.spawnHero.bind(this), 5000);
   }
 
   update(time, delta) {
@@ -232,6 +257,19 @@ export class Dungeon extends Scene {
     this.add.existing(this.newStructure);
   }
 
+  collectBlood(damage: number) {
+    const bloodQty = damage * Dungeon.BLOOD_COLLECT_RATIO;
+    const bottle = this.filledBloodBottle;
+
+    this.bloodCollected += bloodQty;
+
+    const fillAmount = this.bloodCollected / 100;
+    const maskHeight = bottle.height * fillAmount;
+    const y = bottle.y - maskHeight;
+
+    this.filledBottleMask.fillRect(bottle.x, y, bottle.width, maskHeight);
+  }
+
   onStructureAttack(data) {
     const structure: Structure = data.structure;
 
@@ -239,7 +277,7 @@ export class Dungeon extends Scene {
       this.heros.forEach((hero) => {
         if (hero.mapPosition.x === structure.mapPosition.x && hero.mapPosition.y === structure.mapPosition.y) {
           hero.damage(data.damage);
-          this.blood += data.damage;
+          this.collectBlood(data.damage);
         }
       });
     }

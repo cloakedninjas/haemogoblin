@@ -109,7 +109,7 @@ export class Preload extends Scene {
     Object.keys(manifest).forEach((fileType: string) => {
       Object.keys(manifest[fileType]).forEach((key) => {
         const assetVars = manifest[fileType][key];
-        const url = fileType + '/' + assetVars['file']; //'assets/'
+        const url = 'assets/' + fileType + '/' + assetVars['file'];
 
         if (fileType === 'spritesheet') {
           this.load[fileType](key, url, assetVars.frameConfig);
