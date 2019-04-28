@@ -160,6 +160,8 @@ export class Preload extends Scene {
     });
 
 
-    this.scene.start('DungeonScene');
+    this.scene.start('ShopScene', {
+      firstTime: true
+    });
   }
 }

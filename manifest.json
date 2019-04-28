@@ -1,8 +1,24 @@
 {
   "image": {
+    "shop-bg": {
+      "file": "shop-background.png",
+      "size": 0
+    },
+    "shop-keeper": {
+      "file": "start-shopkeeper.png",
+      "size": 0
+    },
+    "coinjar": {
+      "file": "coinjar.png",
+      "size": 0
+    },
+    "coins": {
+      "file": "coins.png",
+      "size": 0
+    },
     "map": {
       "file": "map template.png",
-      "size": 85726
+      "size": 0
     },
     "ui-bar": {
       "file": "ui-bar.png"

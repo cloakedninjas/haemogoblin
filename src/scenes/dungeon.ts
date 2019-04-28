@@ -9,6 +9,7 @@ import {Structure} from "../entities/structure";
 import Graphics = Phaser.GameObjects.Graphics;
 import {Bar} from "../lib/bar";
 import Text = Phaser.GameObjects.Text;
+import {Game} from "../game";
 
 export class Dungeon extends Scene {
   static GRID_SIZE: number = 90;
@@ -144,7 +145,7 @@ export class Dungeon extends Scene {
     this.add.existing(this.healthBar);
 
     this.goldCounter = this.add.text(906, 683, this.gold.toString(), {
-      fontFamily: 'Pangolin, cursive, sans-serif',
+      fontFamily: Game.DEFAULT_FONT,
       fontSize: '30px',
       align: 'center',
       fill: '#000'
@@ -155,13 +156,13 @@ export class Dungeon extends Scene {
     // price labels
 
     this.add.text(520, 670, Dungeon.COST_TRAP.toString(), {
-      fontFamily: 'Pangolin, cursive, sans-serif',
+      fontFamily: Game.DEFAULT_FONT,
       fontSize: '20px',
       fill: '#000'
     });
 
     this.add.text(750, 670, Dungeon.COST_TOWER.toString(), {
-      fontFamily: 'Pangolin, cursive, sans-serif',
+      fontFamily: Game.DEFAULT_FONT,
       fontSize: '20px',
       fill: '#000'
     });
