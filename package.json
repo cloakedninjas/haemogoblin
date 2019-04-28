@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack -c webpack-dist.config.js --mode production",
     "start": "webpack-dev-server",
     "lint": "eslint src/**/*.ts --fix"
   },
