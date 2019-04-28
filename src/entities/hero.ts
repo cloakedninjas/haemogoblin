@@ -146,7 +146,7 @@ export class Hero extends GameObjects.Sprite {
         if (this.anims.currentAnim.key !== 'hero-attack') {
           this.anims.play('hero-attack', true)
             .on('animationcomplete', function () {
-              if (this.stamina > 0) {
+              if (this.stamina >= Hero.STAMINA_DRAIN_ATTACK) {
                 this.attack();
 
                 this.scene.time.addEvent({
@@ -166,6 +166,7 @@ export class Hero extends GameObjects.Sprite {
           this.anims.play('hero-teleport');
 
           this.on('animationcomplete', () => {
+            this.destroyBars();
             this.setTintFill(0xfbb040, 0xfbb040, 0xffffff, 0xffffff);
 
             this.scene.tweens.add({
@@ -225,8 +226,7 @@ export class Hero extends GameObjects.Sprite {
 
       if (this.health <= 0) {
         this.action = Hero.ACTION_DYING;
-        this.healtBar.destroy();
-        this.staminaBar.destroy();
+        this.destroyBars();
       }
     }
 
@@ -254,5 +254,15 @@ export class Hero extends GameObjects.Sprite {
 
   onTeleport() {
     this.destroy();
+  }
+
+  destroy(fromScene?: boolean) {
+    this.destroyBars(fromScene);
+    super.destroy(fromScene);
+  }
+
+  destroyBars(fromScene?: boolean) {
+    this.healtBar.destroy(fromScene);
+    this.staminaBar.destroy(fromScene);
   }
 }
