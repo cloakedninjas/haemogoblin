@@ -13,6 +13,7 @@ export class Hero extends GameObjects.Sprite {
   static ACTION_WALKING: number = 1;
   static ACTION_ATTACKING: number = 2;
   static ACTION_LEAVING: number = 3;
+  static ACTION_DYING: number = 4;
 
   path: Path;
   follower: any;
@@ -20,6 +21,7 @@ export class Hero extends GameObjects.Sprite {
   stamina: number;
   mapPosition: Vector2Like;
   slowed: boolean;
+  targetable: boolean;
   slowTimer: TimerEvent;
   action: number;
   healtBar: Bar;
@@ -36,6 +38,7 @@ export class Hero extends GameObjects.Sprite {
     this.health = 100;
     this.stamina = 100;
     this.slowed = false;
+    this.targetable = true;
     this.action = Hero.ACTION_WALKING;
     this.mapPosition = {
       x: 0,
@@ -186,22 +189,46 @@ export class Hero extends GameObjects.Sprite {
         }
 
         break;
+
+      case Hero.ACTION_DYING:
+        if (this.anims.currentAnim.key !== 'hero-death') {
+          this.anims.play('hero-death');
+
+          this.on('animationcomplete', () => {
+            this.targetable = false;
+
+            // fade body out
+            this.scene.tweens.add({
+              targets: this,
+              alpha: 0,
+              ease: 'Quad.easeIn',
+              duration: 1500,
+              delay: 300,
+              onComplete: () => {
+                this.destroy();
+              },
+            });
+          });
+        }
+        break;
     }
   }
 
-  damage(dmg: number) {
-    this.health -= dmg;
+  damage(dmg: number): number {
+    let damageDealt = 0;
 
-    this.healtBar.setValue(this.stamina / 100);
+    if (this.health > 0) {
+      this.health -= dmg;
 
-    if (this.health <= 0) {
-      console.log('he dead...');
+      damageDealt = Math.min(this.health, dmg);
+      this.healtBar.setValue(this.health / 100);
 
-      this.destroy();
-      return false;
+      if (this.health <= 0) {
+        this.action = Hero.ACTION_DYING;
+      }
     }
 
-    return true;
+    return damageDealt;
   }
 
   slow() {

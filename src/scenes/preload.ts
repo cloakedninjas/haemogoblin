@@ -143,7 +143,13 @@ export class Preload extends Scene {
 
     this.anims.create({
       key: 'hero-attack',
-      frames: this.anims.generateFrameNumbers('spike-trap', {frames: [1, 2, 3, 3, 3, 3, 1, 0]}),
+      frames: this.anims.generateFrameNumbers('hero-attack', {start: 0, end: 4}),
+      frameRate: 8,
+    });
+
+    this.anims.create({
+      key: 'hero-death',
+      frames: this.anims.generateFrameNumbers('hero-death', {start: 0, end: 6}),
       frameRate: 8,
     });
 

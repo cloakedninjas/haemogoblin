@@ -39,6 +39,20 @@
         "frameHeight": 138
       }
     },
+    "hero-attack": {
+      "file": "hero-attack.png",
+      "frameConfig": {
+        "frameWidth": 157,
+        "frameHeight": 128
+      }
+    },
+    "hero-death": {
+      "file": "hero-death.png",
+      "frameConfig": {
+        "frameWidth": 112,
+        "frameHeight": 130
+      }
+    },
     "spike-trap": {
       "file": "spike-trap.png",
       "frameConfig": {

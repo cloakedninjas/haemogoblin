@@ -7,6 +7,7 @@ import {Trap} from "../entities/trap";
 import {Tower} from "../entities/tower";
 import {Structure} from "../entities/structure";
 import Graphics = Phaser.GameObjects.Graphics;
+import {Bar} from "../lib/bar";
 
 export class Dungeon extends Scene {
   static GRID_SIZE: number = 90;
@@ -35,6 +36,7 @@ export class Dungeon extends Scene {
   gold: number;
   bloodCollected: number;
   playerHealth: number;
+  healthBar: Bar;
 
   constructor() {
     super({
@@ -57,6 +59,7 @@ export class Dungeon extends Scene {
   }
 
   init() {
+    this.playerHealth = 20;
   }
 
   create() {
@@ -121,6 +124,14 @@ export class Dungeon extends Scene {
     this.filledBottleMask.beginPath();
 
     this.filledBloodBottle.setMask(this.filledBottleMask.createGeometryMask());
+
+    this.healthBar = new Bar(this, {
+      fillPercent: this.playerHealth / 100,
+      fillColour: 0xff0000
+    });
+
+    this.add.existing(this.healthBar);
+
     // buttons
 
     this.trapButton = this.add.sprite(600, 674, 'spike-trap', 3);
@@ -247,8 +258,8 @@ export class Dungeon extends Scene {
     if (structure instanceof Trap) {
       this.heroes.forEach((hero) => {
         if (hero.mapPosition.x === structure.mapPosition.x && hero.mapPosition.y === structure.mapPosition.y) {
-          hero.damage(data.damage);
-          this.collectBlood(data.damage);
+          const dmgDealt = hero.damage(data.damage);
+          this.collectBlood(dmgDealt);
         }
       });
     }

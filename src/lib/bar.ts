@@ -18,7 +18,7 @@ export class Bar extends GameObjects.Graphics {
   }
 
   setValue(newValue: number) {
-    this.fillPercent = newValue;
+    this.fillPercent = Phaser.Math.Clamp(newValue, 0, 1);
     this.clear();
     this.fillStyle(this.fillColour, 1);
     this.fillRect(0, 0, this.width * this.fillPercent, this.height);
