@@ -142,10 +142,18 @@ export class Preload extends Scene {
     });
 
     this.anims.create({
+      key: 'hero-attack',
+      frames: this.anims.generateFrameNumbers('spike-trap', { frames: [1, 2, 3, 3, 3, 3, 1, 0] }),
+      frameRate: 8,
+    });
+
+    this.anims.create({
       key: 'spike-trap',
       frames: this.anims.generateFrameNumbers('spike-trap', { frames: [1, 2, 3, 3, 3, 3, 1, 0] }),
       frameRate: 8,
     });
+
+
 
     this.scene.start('DungeonScene');
   }

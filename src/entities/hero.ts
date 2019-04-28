@@ -5,7 +5,9 @@ import TimerEvent = Phaser.Time.TimerEvent;
 export class Hero extends GameObjects.Sprite {
   static MOVE_SPEED: number = 0.4;
   static MOVE_SPEED_SLOW: number = 0.2;
-  static STAMINA_DRAIN: number = 0.05;
+  static STAMINA_DRAIN_WALK: number = 0.05;
+  static STAMINA_DRAIN_ATTACK: number = 6;
+  static ATTACK_DELAY: number = 1000;
 
   static ACTION_WALKING: number = 1;
   static ACTION_ATTACKING: number = 2;
@@ -67,7 +69,7 @@ export class Hero extends GameObjects.Sprite {
         }
 
         if (this.stamina > 0) {
-          this.stamina -= Hero.STAMINA_DRAIN;
+          this.stamina -= Hero.STAMINA_DRAIN_WALK;
 
           this.follower.t += walkSpeed;
 
@@ -109,14 +111,30 @@ export class Hero extends GameObjects.Sprite {
         break;
 
       case Hero.ACTION_ATTACKING:
-        // TODO - play attac animation, drain stamina
+        if (this.anims.currentAnim.key !== 'hero-attack') {
+          this.anims.play('hero-attack', true)
+            .on('animationcomplete', function () {
+              if (this.stamina > 0) {
+                this.attack();
+
+                this.scene.time.addEvent({
+                  delay: Hero.ATTACK_DELAY, callback: function () {
+                    this.anims.play('hero-attack', true);
+                  }, callbackScope: this
+                });
+              } else {
+                this.action = Hero.ACTION_LEAVING;
+              }
+            }, this);
+        }
         break;
 
       case Hero.ACTION_LEAVING:
         if (this.anims.currentAnim.key !== 'hero-teleport') {
-          let anim = this.anims.play('hero-teleport');
+          this.anims.play('hero-teleport');
 
           this.on('animationcomplete', () => {
+            console.log('I am here');
             this.setTintFill(0xfbb040, 0xfbb040, 0xffffff, 0xffffff);
 
             this.scene.tweens.add({
@@ -165,6 +183,11 @@ export class Hero extends GameObjects.Sprite {
 
   removeSlow() {
     this.slowed = false;
+  }
+
+  attack() {
+    console.log('deal dmg');
+    this.stamina -= Hero.STAMINA_DRAIN_ATTACK;
   }
 
   onTeleport() {
