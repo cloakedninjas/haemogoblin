@@ -8,12 +8,14 @@ export class Structure extends GameObjects.Sprite {
   placed: boolean;
   attackRange: number;
   canAttack: boolean;
+  canPlace: boolean;
   attackTimer: TimerEvent;
   mapPosition: Vector2Like;
 
   constructor(scene: Scene, x: number, y: number, sprite, frame?) {
     super(scene, x, y, sprite, frame);
 
+    this.canPlace = false;
     this.placed = false;
     this.attackRange = 0;
     this.refreshAttack();

@@ -8,6 +8,7 @@ import {Tower} from "../entities/tower";
 import {Structure} from "../entities/structure";
 import Graphics = Phaser.GameObjects.Graphics;
 import {Bar} from "../lib/bar";
+import Text = Phaser.GameObjects.Text;
 
 export class Dungeon extends Scene {
   static GRID_SIZE: number = 90;
@@ -21,6 +22,9 @@ export class Dungeon extends Scene {
   static NOT_PLACEABLE: number = 2;
 
   static BLOOD_COLLECT_RATIO: number = 0.2;
+
+  static COST_TRAP: number = 60;
+  static COST_TOWER: number = 80;
 
   map: number[][];
   mapBg: Phaser.GameObjects.Image;
@@ -37,6 +41,7 @@ export class Dungeon extends Scene {
   bloodCollected: number;
   playerHealth: number;
   healthBar: Bar;
+  goldCounter: Text;
 
   constructor() {
     super({
@@ -60,6 +65,7 @@ export class Dungeon extends Scene {
 
   init() {
     this.playerHealth = 20;
+    this.gold = 250;
   }
 
   create() {
@@ -132,6 +138,29 @@ export class Dungeon extends Scene {
 
     this.add.existing(this.healthBar);
 
+    this.goldCounter = this.add.text(906, 683, this.gold.toString(), {
+      fontFamily: 'Pangolin, cursive, sans-serif',
+      fontSize: '30px',
+      align: 'center',
+      fill: '#000'
+    });
+
+    this.goldCounter.setOrigin(0.5);
+
+    // price labels
+
+    this.add.text(520, 670, Dungeon.COST_TRAP.toString(), {
+      fontFamily: 'Pangolin, cursive, sans-serif',
+      fontSize: '20px',
+      fill: '#000'
+    });
+
+    this.add.text(750, 670, Dungeon.COST_TOWER.toString(), {
+      fontFamily: 'Pangolin, cursive, sans-serif',
+      fontSize: '20px',
+      fill: '#000'
+    });
+
     // buttons
 
     this.trapButton = this.add.sprite(600, 674, 'spike-trap', 3);
@@ -177,13 +206,19 @@ export class Dungeon extends Scene {
       });
     });
 
-    //this.graphics.clear();
-    //this.graphics.lineStyle(2, 0xffff00, 1);
-
-    //this.heroPath.draw(this.graphics);
-
     if (this.newStructure) {
-      this.newStructure.setPosition(this.input.activePointer.worldX, this.input.activePointer.worldY);
+      this.newStructure.setPosition(this.input.activePointer.x, this.input.activePointer.y);
+
+      const {x, y} = this.pixelToTile(this.input.activePointer.x, this.input.activePointer.y);
+
+      this.newStructure.canPlace = (this.newStructure instanceof Trap && this.map[x][y] === Dungeon.TRAP_PLACEABLE) ||
+        (this.newStructure instanceof Tower && this.map[x][y] === Dungeon.TOWER_PLACEABLE);
+
+      if (this.newStructure.canPlace) {
+        this.newStructure.setTint(0x00ff00);
+      } else {
+        this.newStructure.setTint(0xff0000);
+      }
     }
   }
 
@@ -195,27 +230,17 @@ export class Dungeon extends Scene {
     }
   }
 
-  onObjectUp(pointer: Pointer, gameObject: GameObject) {
+  onObjectUp(pointer: Pointer) {
     if (this.newStructure) {
       const {x, y} = this.pixelToTile(pointer.x, pointer.y);
 
-      const canPlace = (this.newStructure instanceof Trap && this.map[x][y] === Dungeon.TRAP_PLACEABLE) ||
-        (this.newStructure instanceof Tower && this.map[x][y] === Dungeon.TOWER_PLACEABLE);
-
-      if (canPlace) {
-        const halfGrid = Dungeon.GRID_SIZE / 2;
-        this.newStructure.setPosition(
-          x * Dungeon.GRID_SIZE + halfGrid + Dungeon.GRID_OFFSET_X,
-          y * Dungeon.GRID_SIZE + halfGrid + Dungeon.GRID_OFFSET_Y);
-        this.newStructure.place(x, y);
-        this.newStructure.on(Structure.EVENT_ATTACK, this.onStructureAttack, this);
-        this.structures[x][y] = this.newStructure;
-
-        this.newStructure = null;
+      if (this.newStructure.canPlace) {
+        this.placeStructure(x, y);
       } else {
         this.newStructure.destroy();
-        this.newStructure = null;
       }
+
+      this.newStructure = null;
     }
   }
 
@@ -230,13 +255,37 @@ export class Dungeon extends Scene {
   }
 
   createTrap() {
-    this.newStructure = new Trap(this, 0, 0);
-    this.add.existing(this.newStructure);
+    if (this.gold >= Dungeon.COST_TRAP) {
+      this.newStructure = new Trap(this, 0, 0);
+      this.add.existing(this.newStructure);
+    }
   }
 
   createTower() {
-    this.newStructure = new Tower(this, 0, 0);
-    this.add.existing(this.newStructure);
+    if (this.gold >= Dungeon.COST_TOWER) {
+      this.newStructure = new Tower(this, 0, 0);
+      this.add.existing(this.newStructure);
+    }
+  }
+
+  placeStructure(x, y) {
+    const halfGrid = Dungeon.GRID_SIZE / 2;
+    this.newStructure.setPosition(
+      x * Dungeon.GRID_SIZE + halfGrid + Dungeon.GRID_OFFSET_X,
+      y * Dungeon.GRID_SIZE + halfGrid + Dungeon.GRID_OFFSET_Y);
+
+    this.newStructure.clearTint();
+    this.newStructure.place(x, y);
+    this.newStructure.on(Structure.EVENT_ATTACK, this.onStructureAttack, this);
+    this.structures[x][y] = this.newStructure;
+
+    if (this.newStructure instanceof Trap) {
+      this.gold -= Dungeon.COST_TRAP;
+    } else {
+      this.gold -= Dungeon.COST_TOWER;
+    }
+
+    this.goldCounter.setText(this.gold.toString());
   }
 
   collectBlood(damage: number) {
