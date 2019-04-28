@@ -97,7 +97,7 @@ export class Preload extends Scene {
       file.previousLoad = file.bytesLoaded;
     });
 
-    this.load.on('complete', function() {
+    this.load.on('complete', function () {
       progressBar.destroy();
       progressBox.destroy();
       loadingText.destroy();
@@ -123,36 +123,35 @@ export class Preload extends Scene {
   create() {
     this.anims.create({
       key: 'hero-down-walk',
-      frames: this.anims.generateFrameNumbers('hero-down-walk', { start: 0, end: 2 }),
+      frames: this.anims.generateFrameNumbers('hero-down-walk', {start: 0, end: 2}),
       frameRate: 6,
       repeat: -1
     });
 
     this.anims.create({
       key: 'hero-side-walk',
-      frames: this.anims.generateFrameNumbers('hero-side-walk', { start: 0, end: 3 }),
+      frames: this.anims.generateFrameNumbers('hero-side-walk', {start: 0, end: 3}),
       frameRate: 8,
       repeat: -1
     });
 
     this.anims.create({
       key: 'hero-teleport',
-      frames: this.anims.generateFrameNumbers('hero-teleport', { start: 0, end: 5 }),
-      frameRate: 8
+      frames: this.anims.generateFrameNumbers('hero-teleport', {frames: [0, 1, 2, 3, 4, 3, 4, 3, 4, 5]}),
+      frameRate: 7
     });
 
     this.anims.create({
       key: 'hero-attack',
-      frames: this.anims.generateFrameNumbers('spike-trap', { frames: [1, 2, 3, 3, 3, 3, 1, 0] }),
+      frames: this.anims.generateFrameNumbers('spike-trap', {frames: [1, 2, 3, 3, 3, 3, 1, 0]}),
       frameRate: 8,
     });
 
     this.anims.create({
       key: 'spike-trap',
-      frames: this.anims.generateFrameNumbers('spike-trap', { frames: [1, 2, 3, 3, 3, 3, 1, 0] }),
+      frames: this.anims.generateFrameNumbers('spike-trap', {frames: [1, 2, 3, 3, 3, 3, 1, 0]}),
       frameRate: 8,
     });
-
 
 
     this.scene.start('DungeonScene');
