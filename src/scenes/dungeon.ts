@@ -254,9 +254,6 @@ export class Dungeon extends Scene {
     const mapX = x - Dungeon.GRID_OFFSET_X;
     const mapY = y - Dungeon.GRID_OFFSET_Y;
 
-    /*const gridX = Math.floor(mapX / Dungeon.GRID_SIZE);
-    const gridY = Math.floor(mapY / Dungeon.GRID_SIZE);*/
-
     return {
       x: Math.floor(mapX / Dungeon.GRID_SIZE),
       y: Math.floor(mapY / Dungeon.GRID_SIZE)

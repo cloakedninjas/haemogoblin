@@ -113,11 +113,8 @@ export class Hero extends GameObjects.Sprite {
         break;
 
       case Hero.ACTION_LEAVING:
-        // TODO - play teleport animation, then remove
         if (this.anims.currentAnim.key !== 'hero-teleport') {
           let anim = this.anims.play('hero-teleport');
-
-          //sprite.on('animationrepeat-walk', function () {
 
           this.on('animationcomplete', () => {
             this.setTintFill(0xfbb040, 0xfbb040, 0xffffff, 0xffffff);
@@ -142,8 +139,6 @@ export class Hero extends GameObjects.Sprite {
           }, this);
         }
 
-        //hero.setTintFill(0xfbb040, 0xfbb040, 0xffffff, 0xffffff);
-        //hero.setAlpha(1, 1, 0, 0)
         break;
     }
   }

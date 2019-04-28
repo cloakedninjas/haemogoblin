@@ -32,7 +32,6 @@ export class Structure extends GameObjects.Sprite {
     if (Math.abs(hero.mapPosition.x - this.mapPosition.x) < this.attackRange &&
       Math.abs(hero.mapPosition.y - this.mapPosition.y) < this.attackRange) {
 
-      //console.log('in range');
       this.trigger(hero);
     }
   }
