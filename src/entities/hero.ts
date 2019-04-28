@@ -5,7 +5,7 @@ import TimerEvent = Phaser.Time.TimerEvent;
 export class Hero extends GameObjects.Sprite {
   static MOVE_SPEED: number = 0.4;
   static MOVE_SPEED_SLOW: number = 0.2;
-  static STAMINA_DRAIN: number = 0.8; //0.05;
+  static STAMINA_DRAIN: number = 0.05;
 
   static ACTION_WALKING: number = 1;
   static ACTION_ATTACKING: number = 2;

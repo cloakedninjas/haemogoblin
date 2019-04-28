@@ -113,16 +113,6 @@ export class Dungeon extends Scene {
       this.structures.push(new Array(Dungeon.MAP_WIDTH));
     });
 
-    const hero = new Hero(this, coords[0][0], coords[0][1], this.heroPath);
-    this.heros.push(hero);
-
-    this.add.existing(hero);
-    hero.startOnPath();
-    hero.on(Phaser.GameObjects.Events.DESTROY, () => {
-      const index = this.heros.indexOf(hero);
-      this.heros.splice(index, 1);
-    });
-
     this.blood = 0;
 
     this.mapBg.setInteractive();
@@ -152,6 +142,10 @@ export class Dungeon extends Scene {
     });
 
     this.input.on('gameobjectup', this.onObjectUp.bind(this));
+
+    this.spawnHero();
+
+    setTimeout(this.spawnHero.bind(this), 3000);
   }
 
   update(time, delta) {
@@ -218,6 +212,16 @@ export class Dungeon extends Scene {
     }
   }
 
+  spawnHero() {
+    const hero = new Hero(this, this.heroPath.startPoint.x, this.heroPath.startPoint.y, this.heroPath);
+
+    hero.on(Phaser.GameObjects.Events.DESTROY, this.onHeroDestroy.bind(this, hero));
+    hero.startOnPath();
+
+    this.heros.push(hero);
+    this.add.existing(hero);
+  }
+
   createTrap() {
     this.newStructure = new Trap(this, 0, 0);
     this.add.existing(this.newStructure);
@@ -232,23 +236,18 @@ export class Dungeon extends Scene {
     const structure: Structure = data.structure;
 
     if (structure instanceof Trap) {
-      let heroesLeftAlive = [];
-
       this.heros.forEach((hero) => {
-        let stillAlive = true;
-
         if (hero.mapPosition.x === structure.mapPosition.x && hero.mapPosition.y === structure.mapPosition.y) {
-          stillAlive = hero.damage(data.damage);
+          hero.damage(data.damage);
           this.blood += data.damage;
         }
-
-        if (stillAlive) {
-          heroesLeftAlive.push(hero);
-        }
       });
-
-      this.heros = heroesLeftAlive;
     }
+  }
+
+  onHeroDestroy(hero: Hero) {
+    const index = this.heros.indexOf(hero);
+    this.heros.splice(index, 1);
   }
 
   pixelToTile(x: number, y: number) {
