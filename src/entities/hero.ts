@@ -1,11 +1,12 @@
 import {GameObjects, Scene} from 'phaser';
 import Path = Phaser.Curves.Path;
 import TimerEvent = Phaser.Time.TimerEvent;
+import {Bar} from "../lib/bar";
 
 export class Hero extends GameObjects.Sprite {
   static MOVE_SPEED: number = 0.4;
   static MOVE_SPEED_SLOW: number = 0.2;
-  static STAMINA_DRAIN_WALK: number = 0.8; //0.05;
+  static STAMINA_DRAIN_WALK: number = 0.05;
   static STAMINA_DRAIN_ATTACK: number = 6;
   static ATTACK_DELAY: number = 1000;
 
@@ -21,6 +22,8 @@ export class Hero extends GameObjects.Sprite {
   slowed: boolean;
   slowTimer: TimerEvent;
   action: number;
+  healtBar: Bar;
+  staminaBar: Bar;
 
   constructor(scene: Scene, x: number, y: number, path: Path) {
     super(scene, x, y, 'hero-down-walk');
@@ -42,6 +45,24 @@ export class Hero extends GameObjects.Sprite {
     this.slowTimer = this.scene.time.addEvent({
       delay: 3000, callback: this.removeSlow, callbackScope: this, paused: true, loop: true
     });
+
+    this.healtBar = new Bar(scene, {
+      fillColour: 0xff0000,
+      fillPercent: 1,
+      width: this.width,
+      height: 10
+    });
+
+    this.scene.add.existing(this.healtBar);
+
+    this.staminaBar = new Bar(scene, {
+      fillColour: 0xffff00,
+      fillPercent: 1,
+      width: this.width,
+      height: 10
+    });
+
+    this.scene.add.existing(this.staminaBar);
   }
 
   startOnPath() {
@@ -69,7 +90,7 @@ export class Hero extends GameObjects.Sprite {
         }
 
         if (this.stamina > 0) {
-          this.stamina -= Hero.STAMINA_DRAIN_WALK;
+          this.reduceStamina(Hero.STAMINA_DRAIN_WALK);
 
           this.follower.t += walkSpeed;
 
@@ -79,6 +100,14 @@ export class Hero extends GameObjects.Sprite {
           // update enemy x and y to the newly obtained x and y
           this.setPosition(this.follower.vec.x, this.follower.vec.y);
           this.depth = this.y + (this.height * this.originY);
+
+          this.healtBar.x = this.x - (this.width * this.originX);
+          this.healtBar.y = this.y - (this.height * this.originY) - 20;
+          this.healtBar.depth = this.depth;
+
+          this.staminaBar.x = this.x - (this.width * this.originX);
+          this.staminaBar.y = this.y - (this.height * this.originY) - 10;
+          this.staminaBar.depth = this.depth;
 
           // we have reached the end of the path
           if (this.follower.t >= 1) {
@@ -164,7 +193,7 @@ export class Hero extends GameObjects.Sprite {
   damage(dmg: number) {
     this.health -= dmg;
 
-    console.log('ouchies', this.health);
+    this.healtBar.setValue(this.stamina / 100);
 
     if (this.health <= 0) {
       console.log('he dead...');
@@ -187,10 +216,22 @@ export class Hero extends GameObjects.Sprite {
 
   attack() {
     console.log('deal dmg');
-    this.stamina -= Hero.STAMINA_DRAIN_ATTACK;
+    this.reduceStamina(Hero.STAMINA_DRAIN_ATTACK);
+  }
+
+  reduceStamina(staminaDrain: number) {
+    this.stamina -= staminaDrain;
+    this.staminaBar.setValue(this.stamina / 100);
   }
 
   onTeleport() {
     this.destroy();
+  }
+
+  destroy(fromScene?) {
+    super.destroy(fromScene);
+
+    this.healtBar.destroy(fromScene);
+    this.staminaBar.destroy(fromScene);
   }
 }
