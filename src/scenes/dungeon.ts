@@ -123,7 +123,7 @@ export class Dungeon extends Scene {
     this.filledBloodBottle.setMask(this.filledBottleMask.createGeometryMask());
     // buttons
 
-    this.trapButton = this.add.sprite(500, 650, 'spike');
+    this.trapButton = this.add.sprite(600, 674, 'spike-trap', 3);
     this.trapButton.setInteractive();
 
     this.trapButton.on('pointerover', () => {
@@ -134,7 +134,7 @@ export class Dungeon extends Scene {
       this.trapButton.clearTint();
     });
 
-    this.towerButton = this.add.sprite(600, 650, 'tower');
+    this.towerButton = this.add.sprite(698, 674, 'tower');
     this.towerButton.setInteractive();
 
     this.towerButton.on('pointerover', () => {
