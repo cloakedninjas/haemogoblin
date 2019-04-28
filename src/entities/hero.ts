@@ -9,11 +9,15 @@ export class Hero extends GameObjects.Sprite {
   static STAMINA_DRAIN_WALK: number = 0.05;
   static STAMINA_DRAIN_ATTACK: number = 6;
   static ATTACK_DELAY: number = 1000;
+  static ATTACK_MIN_DAMAGE: number = 7;
+  static ATTACK_MAX_DAMAGE: number = 10;
 
   static ACTION_WALKING: number = 1;
   static ACTION_ATTACKING: number = 2;
   static ACTION_LEAVING: number = 3;
   static ACTION_DYING: number = 4;
+
+  static EVENT_ATTACK: string = 'attack';
 
   path: Path;
   follower: any;
@@ -146,16 +150,12 @@ export class Hero extends GameObjects.Sprite {
         if (this.anims.currentAnim.key !== 'hero-attack') {
           this.anims.play('hero-attack', true)
             .on('animationcomplete', function () {
-              if (this.stamina >= Hero.STAMINA_DRAIN_ATTACK) {
-                this.attack();
-
+              if (this.tryToAttack()) {
                 this.scene.time.addEvent({
                   delay: Hero.ATTACK_DELAY, callback: function () {
                     this.anims.play('hero-attack', true);
                   }, callbackScope: this
                 });
-              } else {
-                this.action = Hero.ACTION_LEAVING;
               }
             }, this);
         }
@@ -242,9 +242,18 @@ export class Hero extends GameObjects.Sprite {
     this.slowed = false;
   }
 
-  attack() {
-    console.log('deal dmg');
-    this.reduceStamina(Hero.STAMINA_DRAIN_ATTACK);
+  tryToAttack(): boolean {
+    if (this.stamina >= Hero.STAMINA_DRAIN_ATTACK) {
+      this.reduceStamina(Hero.STAMINA_DRAIN_ATTACK);
+      this.emit(Hero.EVENT_ATTACK, {
+        damage: Phaser.Math.Between(Hero.ATTACK_MIN_DAMAGE, Hero.ATTACK_MAX_DAMAGE)
+      });
+
+      return true;
+    } else {
+     this.action = Hero.ACTION_LEAVING;
+     return false;
+    }
   }
 
   reduceStamina(staminaDrain: number) {

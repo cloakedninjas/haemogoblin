@@ -26,9 +26,10 @@ export class Dungeon extends Scene {
   static COST_TRAP: number = 60;
   static COST_TOWER: number = 80;
 
+  static PLAYER_MAX_HEALTH: number = 100;
+
   map: number[][];
   mapBg: Phaser.GameObjects.Image;
-  graphics: Phaser.GameObjects.Graphics;
   heroPath: Phaser.Curves.Path;
   heroes: Hero[];
   structures: Structure[][];
@@ -132,9 +133,13 @@ export class Dungeon extends Scene {
     this.filledBloodBottle.setMask(this.filledBottleMask.createGeometryMask());
 
     this.healthBar = new Bar(this, {
-      fillPercent: this.playerHealth / 100,
-      fillColour: 0xff0000
+      fillPercent: this.playerHealth / Dungeon.PLAYER_MAX_HEALTH,
+      fillColour: 0xff0000,
+      width: 150,
+      height: 20
     });
+    this.healthBar.x = 10;
+    this.healthBar.y = 10;
 
     this.add.existing(this.healthBar);
 
@@ -248,6 +253,7 @@ export class Dungeon extends Scene {
     const hero = new Hero(this, this.heroPath.startPoint.x, this.heroPath.startPoint.y, this.heroPath);
 
     hero.on(Phaser.GameObjects.Events.DESTROY, this.onHeroDestroy.bind(this, hero));
+    hero.on(Hero.EVENT_ATTACK, this.onHeroAttack, this);
     hero.startOnPath();
 
     this.heroes.push(hero);
@@ -317,6 +323,16 @@ export class Dungeon extends Scene {
   onHeroDestroy(hero: Hero) {
     const index = this.heroes.indexOf(hero);
     this.heroes.splice(index, 1);
+  }
+
+  onHeroAttack(data) {
+    this.playerHealth -= data.damage;
+    this.healthBar.setValue(this.playerHealth / Dungeon.PLAYER_MAX_HEALTH);
+
+    if (this.playerHealth <= 0) {
+      console.log('game over!');
+      this.scene.stop();
+    }
   }
 
   pixelToTile(x: number, y: number) {
