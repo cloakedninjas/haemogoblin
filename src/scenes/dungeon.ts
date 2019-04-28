@@ -60,27 +60,6 @@ export class Dungeon extends Scene {
   }
 
   create() {
-    this.anims.create({
-      key: 'hero-down-walk',
-      frames: this.anims.generateFrameNumbers('hero-down-walk', { start: 0, end: 2 }),
-      frameRate: 6,
-      repeat: -1
-    });
-
-    this.anims.create({
-      key: 'hero-side-walk',
-      frames: this.anims.generateFrameNumbers('hero-side-walk', { start: 0, end: 3 }),
-      frameRate: 8,
-      repeat: -1
-    });
-
-    this.anims.create({
-      key: 'hero-teleport',
-      frames: this.anims.generateFrameNumbers('hero-teleport', { start: 0, end: 5 }),
-      frameRate: 8,
-      repeat: 0
-    });
-
     this.mapBg = this.add.image(0, 0, 'map');
     this.mapBg.setOrigin(0, 0);
 

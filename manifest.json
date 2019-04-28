@@ -41,6 +41,13 @@
         "frameWidth": 100,
         "frameHeight": 138
       }
+    },
+    "spike-trap": {
+      "file": "spike-trap.png",
+      "frameConfig": {
+        "frameWidth": 90,
+        "frameHeight": 91
+      }
     }
   },
   "audio": {},
