@@ -115,6 +115,18 @@
       "size": 21098
     }
   },
-  "audio": {},
-  "json": {}
+  "audio": {
+    "music-shop": {
+      "file": "shop-theme.mp3",
+      "size": 41702
+    },
+    "music-dungeon": {
+      "file": "battle-theme.mp3",
+      "size": 41702
+    },
+    "music-transition": {
+      "file": "transition-sting.mp3",
+      "size": 41702
+    }
+  }
 }

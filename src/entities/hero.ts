@@ -1,7 +1,7 @@
 import {GameObjects, Scene} from 'phaser';
 import Path = Phaser.Curves.Path;
 import TimerEvent = Phaser.Time.TimerEvent;
-import {Bar} from "../lib/bar";
+import {Bar} from '../lib/bar';
 
 export class Hero extends GameObjects.Sprite {
   static MOVE_SPEED: number = 0.4;

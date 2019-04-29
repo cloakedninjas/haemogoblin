@@ -3,14 +3,14 @@ import {Hero} from '../entities/hero';
 import Pointer = Phaser.Input.Pointer;
 import GameObject = Phaser.GameObjects.GameObject;
 import Sprite = Phaser.GameObjects.Sprite;
-import {Trap} from "../entities/trap";
-import {Tower} from "../entities/tower";
-import {Structure} from "../entities/structure";
+import {Trap} from '../entities/trap';
+import {Tower} from '../entities/tower';
+import {Structure} from '../entities/structure';
 import Graphics = Phaser.GameObjects.Graphics;
-import {Bar} from "../lib/bar";
+import {Bar} from '../lib/bar';
 import Text = Phaser.GameObjects.Text;
-import {Game} from "../game";
-import {Shop} from "./shop";
+import {Game} from '../game';
+import {Shop} from './shop';
 
 export class Dungeon extends Scene {
   static GRID_SIZE: number = 90;
@@ -30,6 +30,7 @@ export class Dungeon extends Scene {
 
   static PLAYER_MAX_HEALTH: number = 100;
 
+  game: Game;
   map: number[][];
   mapBg: Phaser.GameObjects.Image;
   heroPath: Phaser.Curves.Path;
@@ -201,6 +202,8 @@ export class Dungeon extends Scene {
     // TODO create spawn system
 
     //setTimeout(this.spawnHero.bind(this), 3000);
+
+    this.game.playMusic('dungeon');
   }
 
   update(time, delta) {

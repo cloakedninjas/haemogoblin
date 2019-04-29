@@ -1,10 +1,12 @@
 import {Scene} from 'phaser';
 import * as manifest from '../../manifest.json';
-import {Shop} from "./shop";
+import {Shop} from './shop';
+import {Game} from '../game';
 
 const MB = 1024 * 1024;
 
 export class Preload extends Scene {
+  game: Game;
   totalDownloadSize: number;
   totalDownloadSizeFormatted: string;
   downloadedSize: number;
@@ -165,6 +167,8 @@ export class Preload extends Scene {
       frames: this.anims.generateFrameNumbers('spike-trap', {frames: [1, 2, 3, 3, 3, 3, 1, 0]}),
       frameRate: 8,
     });
+
+    this.game.initMusic()
 
     this.scene.start('ShopScene', {
       stage: Shop.STAGE_PUMP,

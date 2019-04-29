@@ -1,6 +1,6 @@
 import Scene = Phaser.Scene;
-import {Structure} from "./structure";
-import {Hero} from "./hero";
+import {Structure} from './structure';
+import {Hero} from './hero';
 import Sprite = Phaser.GameObjects.Sprite;
 
 export class Tower extends Structure {
@@ -15,7 +15,6 @@ export class Tower extends Structure {
     this.attackRange = 2;
     this.web = new Sprite(scene, x, y, 'spider-web');
     this.web.setVisible(false);
-    //this.web.setScale(0.3);
     scene.add.existing(this.web);
   }
 

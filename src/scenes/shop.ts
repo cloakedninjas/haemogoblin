@@ -1,7 +1,7 @@
 import {Scene} from 'phaser';
-import {Game} from "../game";
-import {Bar} from "../lib/bar";
-import {Dungeon} from "./dungeon";
+import {Game} from '../game';
+import {Bar} from '../lib/bar';
+import {Dungeon} from './dungeon';
 
 export class Shop extends Scene {
   static STAGE_FIRST: number = 1;
@@ -14,6 +14,7 @@ export class Shop extends Scene {
   static START_POTIONS: number = 7;
   static BLOOD_PUMP_AMOUNT: number = 10;
 
+  game: Game;
   stage: number;
   bg: Phaser.GameObjects.Image;
   shopKeeper: Phaser.GameObjects.Image;
@@ -128,6 +129,8 @@ export class Shop extends Scene {
         });
       }
     }
+
+    this.game.playMusic('shop');
   }
 
   setCoinJarMask() {
@@ -223,6 +226,11 @@ export class Shop extends Scene {
         callback: () => {
           // TODO add transition
           // TODO - add gold check for win condition
+
+          this.game.stopMusic();
+
+          this.sound.add('music-transition').play();
+
           this.scene.start('DungeonScene', {
             playerHealth: this.blood,
             gold: this.gold

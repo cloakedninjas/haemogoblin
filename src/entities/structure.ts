@@ -1,6 +1,6 @@
 import {GameObjects} from 'phaser';
 import Scene = Phaser.Scene;
-import {Hero} from "./hero";
+import {Hero} from './hero';
 import TimerEvent = Phaser.Time.TimerEvent;
 
 export class Structure extends GameObjects.Sprite {

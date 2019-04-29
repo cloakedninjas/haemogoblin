@@ -1,5 +1,5 @@
 import Scene = Phaser.Scene;
-import {Structure} from "./structure";
+import {Structure} from './structure';
 
 export class Trap extends Structure {
   static DAMAGE: number = 15;
