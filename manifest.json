@@ -13,7 +13,11 @@
       "size": 37086
     },
     "shop-keeper": {
-      "file": "start-shopkeeper.png",
+      "file": "shopkeeper.png",
+      "size": 41702
+    },
+    "credits": {
+      "file": "names.png",
       "size": 41702
     },
     "open-sign": {

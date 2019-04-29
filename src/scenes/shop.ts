@@ -122,7 +122,7 @@ export class Shop extends Scene {
 
       this.shopKeeper = this.add.image(this.cameras.main.centerX, this.cameras.main.height, 'shop-keeper');
       this.shopKeeper.setOrigin(0.5, 1);
-      this.shopKeeper.depth = 2;
+      this.shopKeeper.setDepth(2);
 
       this.coinStack = this.add.image(515, Shop.COIN_START_Y, 'coins');
       this.coinStack.setOrigin(0.5, 1);
@@ -151,6 +151,9 @@ export class Shop extends Scene {
             potionsAvailable: Shop.START_POTIONS
           });
         });
+
+        const credits = this.add.image(657, 652, 'credits');
+        credits.setDepth(3);
 
         this.creditHitArea = {
           'cloakedninjas': this.add.rectangle(321, 653, 249, 50),
