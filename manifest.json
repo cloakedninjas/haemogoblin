@@ -4,6 +4,10 @@
       "file": "play.png",
       "size": 37086
     },
+    "title": {
+      "file": "title.png",
+      "size": 37086
+    },
     "shop-bg": {
       "file": "shop-background.png",
       "size": 37086
@@ -11,6 +15,10 @@
     "shop-keeper": {
       "file": "start-shopkeeper.png",
       "size": 41702
+    },
+    "open-sign": {
+      "file": "open-sign.png",
+      "size": 37086
     },
     "customer": {
       "file": "sill.png",

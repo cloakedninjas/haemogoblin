@@ -102,8 +102,7 @@ export class Shop extends Scene {
         }
       });
 
-      // TODO - add proper button
-      const button = this.add.image(900, 600, 'coins');
+      const button = this.add.image(958, 500, 'open-sign');
       button.setInteractive();
       button.depth = 3;
       button.on('pointerdown', () => {
@@ -118,7 +117,7 @@ export class Shop extends Scene {
 
     } else {
       for (let i = 0; i < this.potionsAvailable; i++) {
-        this.addPotion(true);
+        this.addPotion();
       }
 
       this.shopKeeper = this.add.image(this.cameras.main.centerX, this.cameras.main.height, 'shop-keeper');
@@ -163,6 +162,38 @@ export class Shop extends Scene {
             window.open('https://twitter.com/' + user);
           });
         }
+
+        const title = this.add.image(160, 15, 'title');
+        title.setOrigin(0);
+        title.setTint(0x333333);
+
+        /*const startCol = Phaser.Display.Color.IntegerToColor(0x333333);
+        const endCol = Phaser.Display.Color.IntegerToColor(0xffffff);
+
+        this.tweens.addCounter({
+          from: 0,
+          to: 100,
+          duration: 2000,
+          onUpdate: function (tween, value: number) {
+            let col = Phaser.Display.Color.Interpolate.ColorWithColor(startCol, endCol, 100, value);
+            let hex = Phaser.Display.Color.GetColor(col.r, col.g, col.b);
+            title.setTint(hex);
+          },
+          //onComplete: callback
+        });*/
+
+        /*this.time.addEvent({
+          delay: 1000, callback: () => {
+            title.clearTint();
+          }
+        });
+
+        this.time.addEvent({
+          delay: 1050, callback: () => {
+            title.setTint(0x333333);
+          }
+        });*/
+
       }
 
       const spider = this.add.rectangle(1050, 465, 40, 41);
@@ -197,7 +228,7 @@ export class Shop extends Scene {
   }
 
   setCoinJarMask() {
-    const fillAmount = this.gold / Shop.GOLD_WIN;
+    const fillAmount = Math.min(this.gold / Shop.GOLD_WIN, 1);
     const fillSize = this.coinStack.height * fillAmount;
     const yOffset = Shop.COIN_START_Y - fillSize;
 
@@ -210,7 +241,7 @@ export class Shop extends Scene {
     this.setCoinJarMask();
   }
 
-  addPotion(silent?: boolean) {
+  addPotion() {
     const x = ((this.potions.length % 5) * 120) + 210;
     const y = this.potions.length >= 5 ? 290 : 120;
 
