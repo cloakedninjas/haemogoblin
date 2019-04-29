@@ -200,5 +200,9 @@ export class Preload extends Scene {
       gold: 190,
       playerHealth: 200
     });*/
+
+    /*this.scene.start('ResultScene', {
+      winCondition: false
+    });*/
   }
 }

@@ -330,18 +330,22 @@ export class Shop extends Scene {
       this.time.addEvent({
         delay: walkDuration + 1000,
         callback: () => {
-          // TODO - add gold check for win condition
-
-          this.game.stopMusic();
-
-          this.sound.add('music-transition').play();
-
-          this.transition.close(() => {
-            this.scene.start('DungeonScene', {
-              playerHealth: this.blood,
-              gold: this.gold
+          if (this.gold >= Shop.GOLD_WIN) {
+            this.scene.start('ResultScene', {
+              stage: Shop.STAGE_FIRST
             });
-          });
+          } else {
+            this.game.stopMusic();
+
+            this.sound.add('music-transition').play();
+
+            this.transition.close(() => {
+              this.scene.start('DungeonScene', {
+                playerHealth: this.blood,
+                gold: this.gold
+              });
+            });
+          }
         }
       });
     }

@@ -71,6 +71,14 @@
     "cloud-top": {
       "file": "overcloud.png",
       "size": 939
+    },
+    "victory": {
+      "file": "victory.png",
+      "size": 939
+    },
+    "defeat": {
+      "file": "defeat.png",
+      "size": 939
     }
   },
   "spritesheet": {

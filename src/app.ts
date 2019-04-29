@@ -1,14 +1,14 @@
 import {Shop as ShopScene} from './scenes/shop';
 import {Dungeon as DungeonScene} from './scenes/dungeon';
+import {Result as ResultScene} from './scenes/result';
 import {Preload} from './scenes/preload';
 import {Game} from './game';
 
 const config: GameConfig = {
   title: 'LD44',
 
-  scene: [Preload, ShopScene, DungeonScene],
+  scene: [Preload, ShopScene, DungeonScene, ResultScene],
   backgroundColor: '#333',
-  // resolution: window.devicePixelRatio,
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
