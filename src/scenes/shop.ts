@@ -2,6 +2,7 @@ import {Scene} from 'phaser';
 import {Game} from '../game';
 import {Bar} from '../lib/bar';
 import {Dungeon} from './dungeon';
+import {CloudTransition} from "../entities/cloud-transition";
 
 export class Shop extends Scene {
   static STAGE_FIRST: number = 1;
@@ -30,6 +31,7 @@ export class Shop extends Scene {
   sounds: Record<string, Phaser.Sound.BaseSound>;
   creditHitArea: Record<string, Phaser.GameObjects.Rectangle>;
   spiderClickCount: number;
+  transition: CloudTransition;
 
   constructor() {
     super({
@@ -180,6 +182,8 @@ export class Shop extends Scene {
       });
     }
 
+    this.transition = new CloudTransition(this);
+
     this.sounds = {
       'fill-bottle': this.sound.add('fill-bottle-short'),
       'door-bell': this.sound.add('door-bell'),
@@ -291,16 +295,17 @@ export class Shop extends Scene {
       this.time.addEvent({
         delay: walkDuration + 1000,
         callback: () => {
-          // TODO add transition
           // TODO - add gold check for win condition
 
           this.game.stopMusic();
 
           this.sound.add('music-transition').play();
 
-          this.scene.start('DungeonScene', {
-            playerHealth: this.blood,
-            gold: this.gold
+          this.transition.close(() => {
+            this.scene.start('DungeonScene', {
+              playerHealth: this.blood,
+              gold: this.gold
+            });
           });
         }
       });

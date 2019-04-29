@@ -11,6 +11,7 @@ import {Bar} from '../lib/bar';
 import Text = Phaser.GameObjects.Text;
 import {Game} from '../game';
 import {Shop} from './shop';
+import {CloudTransition} from "../entities/cloud-transition";
 
 export class Dungeon extends Scene {
   static GRID_SIZE: number = 90;
@@ -49,6 +50,7 @@ export class Dungeon extends Scene {
   goldCounter: Text;
   sounds: Record<string, Phaser.Sound.BaseSound>;
   shopKeeper: Phaser.GameObjects.Sprite;
+  transition: CloudTransition;
 
   constructor() {
     super({
@@ -76,6 +78,9 @@ export class Dungeon extends Scene {
   }
 
   create() {
+    this.transition = new CloudTransition(this);
+    this.transition.close(null, true);
+
     this.mapBg = this.add.image(0, 0, 'map');
     this.mapBg.setOrigin(0, 0);
 
@@ -214,7 +219,9 @@ export class Dungeon extends Scene {
       'ui-place': this.sound.add('button-place')
     };
 
-    this.game.playMusic('dungeon');
+    this.transition.open(() => {
+      this.game.playMusic('dungeon');
+    });
   }
 
   update(time, delta) {
@@ -331,8 +338,6 @@ export class Dungeon extends Scene {
   collectBlood(damage: number) {
     const bloodQty = damage * Dungeon.BLOOD_COLLECT_RATIO;
     const bottle = this.filledBloodBottle;
-
-    console.log(bloodQty);
 
     this.bloodCollected += bloodQty;
 

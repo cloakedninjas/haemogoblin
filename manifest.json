@@ -51,6 +51,14 @@
     "spider-web": {
       "file": "spider-web.png",
       "size": 939
+    },
+    "cloud-bottom": {
+      "file": "undercloud.png",
+      "size": 939
+    },
+    "cloud-top": {
+      "file": "overcloud.png",
+      "size": 939
     }
   },
   "spritesheet": {
