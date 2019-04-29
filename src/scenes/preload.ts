@@ -183,15 +183,15 @@ export class Preload extends Scene {
 
     this.game.initMusic();
 
-    /*this.scene.start('ShopScene', {
-      stage: Shop.STAGE_FIRST,
+    this.scene.start('ShopScene', {
+      stage: Shop.STAGE_PUMP,
       gold: 170,
       blood: 19
-    });*/
+    });
 
-    this.scene.start('DungeonScene', {
+    /*this.scene.start('DungeonScene', {
       gold: 190,
       playerHealth: 200
-    });
+    });*/
   }
 }

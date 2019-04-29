@@ -169,6 +169,7 @@ export class Shop extends Scene {
 
     this.sounds = {
       'fill-bottle': this.sound.add('fill-bottle-short'),
+      'door-bell': this.sound.add('door-bell'),
     };
 
     for (let i = 1; i <= 4; i++) {
@@ -217,6 +218,14 @@ export class Shop extends Scene {
         callback: this.customerWalk,
         callbackScope: this
       });
+    } else {
+      // buy another
+
+      this.time.addEvent({
+        delay: 500,
+        callback: this.buyPotion,
+        callbackScope: this
+      });
     }
   }
 
@@ -237,6 +246,8 @@ export class Shop extends Scene {
     const angle = 4;
 
     if (walkIn) {
+      this.sounds['door-bell'].play();
+
       this.tweens.add({
         targets: this.customer,
         x: 250,
@@ -249,13 +260,6 @@ export class Shop extends Scene {
         delay: walkDuration + 1000,
         callback: () => {
           this.buyPotion();
-
-          this.time.addEvent({
-            delay: 500,
-            repeat: this.potions.length - 1,
-            callback: this.buyPotion,
-            callbackScope: this
-          });
         },
       });
     } else {
@@ -264,7 +268,10 @@ export class Shop extends Scene {
         targets: this.customer,
         x: -300,
         y: 1100,
-        duration: walkDuration
+        duration: walkDuration,
+        onComplete: () => {
+          this.sounds['door-bell'].play();
+        }
       });
 
       // setup scene end

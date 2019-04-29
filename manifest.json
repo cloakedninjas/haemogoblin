@@ -215,6 +215,10 @@
     "player-ouch-2": {
       "file": "player-ouch-2.mp3",
       "size": 41702
+    },
+    "door-bell": {
+      "file": "door-bell.mp3",
+      "size": 41702
     }
   }
 }
