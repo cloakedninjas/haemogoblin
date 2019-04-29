@@ -9,6 +9,7 @@ export class Shop extends Scene {
   static STAGE_PUMP: number = 3;
 
   static COIN_START_Y: number = 575;
+  static GOLD_START: number = 20;
   static GOLD_WIN: number = 600;
   static POTION_COST: number = 50;
   static START_POTIONS: number = 7;
@@ -134,6 +135,18 @@ export class Shop extends Scene {
           delay: 1000, callback: this.createCustomer, callbackScope: this
         });
       } else {
+        const startButton = this.add.image(294, 515, 'play-btn');
+        startButton.setOrigin(0.5, 1);
+        startButton.setInteractive();
+        startButton.on('pointerdown', () => {
+          this.scene.start('ShopScene', {
+            stage: Shop.STAGE_SELL,
+            gold: Shop.GOLD_START,
+            blood: 100,
+            potionsAvailable: Shop.START_POTIONS
+          });
+        });
+
         this.creditHitArea = {
           'cloakedninjas': this.add.rectangle(321, 653, 249, 50),
           'treslapin': this.add.rectangle(488, 611, 179, 49),

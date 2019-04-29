@@ -1,5 +1,9 @@
 {
   "image": {
+    "play-btn": {
+      "file": "play.png",
+      "size": 37086
+    },
     "shop-bg": {
       "file": "shop-background.png",
       "size": 37086

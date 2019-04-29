@@ -184,7 +184,7 @@ export class Preload extends Scene {
     this.game.initMusic();
 
     this.scene.start('ShopScene', {
-      stage: Shop.STAGE_PUMP,
+      stage: Shop.STAGE_FIRST,
       gold: 170,
       blood: 19
     });

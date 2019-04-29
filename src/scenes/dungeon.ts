@@ -224,7 +224,7 @@ export class Dungeon extends Scene {
       this.scene.start('ShopScene', {
         stage: Shop.STAGE_PUMP,
         gold: this.gold,
-        blood: this.bloodCollected + this.playerHealth
+        blood: Math.min(this.bloodCollected + this.playerHealth, Dungeon.PLAYER_MAX_HEALTH)
       });
     }
     this.heroes.forEach((hero) => {
