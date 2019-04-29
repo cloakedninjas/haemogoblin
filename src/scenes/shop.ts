@@ -21,6 +21,7 @@ export class Shop extends Scene {
   bloodPump: Phaser.GameObjects.Sprite;
   gold: number;
   blood: number;
+  potionsAvailable: number;
   potions: Phaser.GameObjects.Image[];
   bloodMeter: Bar;
 
@@ -32,10 +33,14 @@ export class Shop extends Scene {
 
   init(data) {
     this.stage = data.stage;
+
     if (this.stage === Shop.STAGE_FIRST) {
       this.gold = 100;
+      this.potionsAvailable = Shop.START_POTIONS;
     } else if (this.stage === Shop.STAGE_PUMP) {
       this.blood = 30;
+    } else if (this.stage === Shop.STAGE_SELL) {
+      this.potionsAvailable = data.potionsAvailable;
     }
   }
 
@@ -53,12 +58,6 @@ export class Shop extends Scene {
     text.setOrigin(0.5, 0);
 
     this.potions = [];
-
-    if (this.stage === Shop.STAGE_FIRST) {
-      for (let i = 0; i < Shop.START_POTIONS; i++) {
-        this.addPotion(true);
-      }
-    }
 
     if (this.stage === Shop.STAGE_PUMP) {
       this.shopKeeper = this.add.image(this.cameras.main.centerX, this.cameras.main.height, 'blood-shop-keeper');
@@ -90,6 +89,10 @@ export class Shop extends Scene {
       });
 
     } else {
+      for (let i = 0; i < this.potionsAvailable; i++) {
+        this.addPotion(true);
+      }
+
       this.shopKeeper = this.add.image(this.cameras.main.centerX, this.cameras.main.height, 'shop-keeper');
       this.shopKeeper.setOrigin(0.5, 1);
 

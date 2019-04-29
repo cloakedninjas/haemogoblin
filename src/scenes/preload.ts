@@ -167,7 +167,8 @@ export class Preload extends Scene {
     });
 
     this.scene.start('ShopScene', {
-      stage: Shop.STAGE_PUMP
+      stage: Shop.STAGE_SELL,
+      potionsAvailable: 5
     });
   }
 }
