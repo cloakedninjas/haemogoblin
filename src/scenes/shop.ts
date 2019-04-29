@@ -26,6 +26,7 @@ export class Shop extends Scene {
   potions: Phaser.GameObjects.Image[];
   bloodMeter: Bar;
   customer: Phaser.GameObjects.Sprite;
+  sounds: Record<string, Phaser.Sound.BaseSound>;
 
   constructor() {
     super({
@@ -90,6 +91,7 @@ export class Shop extends Scene {
       this.bloodPump.on('pointerdown', () => {
         if (this.blood > Shop.BLOOD_PUMP_AMOUNT) {
           this.bloodPump.anims.play('blood-pump', true);
+          this.sounds['fill-bottle'].play();
         }
       });
 
@@ -130,6 +132,15 @@ export class Shop extends Scene {
       }
     }
 
+    this.sounds = {
+      'fill-bottle': this.sound.add('fill-bottle-short'),
+
+    };
+
+    for (let i = 1; i <= 4; i++) {
+      this.sounds['sale-' + i] = this.sound.add('shop-sale-' + i);
+    }
+
     this.game.playMusic('shop');
   }
 
@@ -162,6 +173,8 @@ export class Shop extends Scene {
     if (potion) {
       potion.destroy();
       this.addGold(Shop.POTION_COST);
+
+      this.sounds['sale-' + Phaser.Math.Between(1, 4)].play();
     }
 
     if (this.potions.length === 0) {
@@ -255,8 +268,6 @@ export class Shop extends Scene {
         });
       }
     });
-
-
   }
 
   onBloodPump() {

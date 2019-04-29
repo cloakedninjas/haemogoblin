@@ -127,7 +127,7 @@ export class Preload extends Scene {
     this.anims.create({
       key: 'blood-pump',
       frames: this.anims.generateFrameNumbers('blood-pump', {start: 0, end: 5}),
-      frameRate: 6
+      frameRate: 5
     });
 
     this.anims.create({

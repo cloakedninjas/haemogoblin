@@ -15,6 +15,7 @@ export class Game extends Phaser.Game {
   }
 
   playMusic(track) {
+    return;
     if (this.currentTrack === this.tracks[track]) {
       // already playing it
       return;
