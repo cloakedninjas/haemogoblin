@@ -2,43 +2,47 @@
   "image": {
     "shop-bg": {
       "file": "shop-background.png",
-      "size": 0
+      "size": 37086
     },
     "shop-keeper": {
       "file": "start-shopkeeper.png",
-      "size": 0
+      "size": 41702
     },
     "blood-shop-keeper": {
       "file": "blood-shopkeeper.png",
-      "size": 0
+      "size": 48118
     },
     "coinjar": {
       "file": "coinjar.png",
-      "size": 0
+      "size": 6744
     },
     "coins": {
       "file": "coins.png",
-      "size": 0
+      "size": 7151
     },
     "potion": {
       "file": "potion.png",
-      "size": 0
+      "size": 5492
     },
     "map": {
       "file": "map template.png",
-      "size": 0
+      "size": 27631
     },
     "ui-bar": {
-      "file": "ui-bar.png"
+      "file": "ui-bar.png",
+      "size": 9517
     },
     "empty-glassbottle": {
-      "file": "empty-glassbottle.png"
+      "file": "empty-glassbottle.png",
+      "size": 5978
     },
     "full-glassbottle": {
-      "file": "full-glassbottle.png"
+      "file": "full-glassbottle.png",
+      "size": 3386
     },
     "spider-web": {
-      "file": "spider-web.png"
+      "file": "spider-web.png",
+      "size": 939
     }
   },
   "spritesheet": {
@@ -47,56 +51,64 @@
       "frameConfig": {
         "frameWidth": 370,
         "frameHeight": 296
-      }
+      },
+      "size": 59866
     },
     "hero-down-walk": {
       "file": "hero-down-walk.png",
       "frameConfig": {
         "frameWidth": 90,
         "frameHeight": 134
-      }
+      },
+      "size": 14164
     },
     "hero-side-walk": {
       "file": "hero-side-walk.png",
       "frameConfig": {
         "frameWidth": 90,
         "frameHeight": 134
-      }
+      },
+      "size": 24250
     },
     "hero-teleport": {
       "file": "hero-teleport.png",
       "frameConfig": {
         "frameWidth": 100,
         "frameHeight": 138
-      }
+      },
+      "size": 24098
     },
     "hero-attack": {
       "file": "hero-attack.png",
       "frameConfig": {
         "frameWidth": 157,
         "frameHeight": 128
-      }
+      },
+      "size": 29088
     },
     "hero-death": {
       "file": "hero-death.png",
       "frameConfig": {
         "frameWidth": 112,
         "frameHeight": 130
-      }
+      },
+      "size": 20302
     },
     "spike-trap": {
       "file": "spike-trap.png",
       "frameConfig": {
         "frameWidth": 90,
         "frameHeight": 91
-      }
+      },
+      "size": 9173
     },
     "tower": {
       "file": "spider.png",
       "frameConfig": {
         "frameWidth": 90,
         "frameHeight": 90
-      }
+      },
+      "size": 21098
     }
   },
   "audio": {},

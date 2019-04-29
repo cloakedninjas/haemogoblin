@@ -36,10 +36,11 @@ export class Preload extends Scene {
       fill: '#ffffff',
     };
     const x = width / 2;
+    const padding = 10;
 
     const loadingText = this.make.text({
       x: x,
-      y: height / 2 - 50,
+      y: height / 2 - 65,
       text: 'Loading...',
       style: {
         font: '20px monospace',
@@ -75,7 +76,7 @@ export class Preload extends Scene {
     totalText.setOrigin(0.5, 0.5);
 
     progressBox.fillStyle(0x222222, 0.8);
-    progressBox.fillRect(240, 270, 320, 50);
+    progressBox.fillRect(x - 250, 270, 500, 50);
 
     this.load.on('fileprogress', (file) => {
       const previousLoad = file.previousLoad || 0;
@@ -86,8 +87,7 @@ export class Preload extends Scene {
 
       progressBar.clear();
       progressBar.fillStyle(0xffffff, 1);
-      progressBar.fillRect(250, 280, 300 * value, 30);
-
+      progressBar.fillRect(x - 250 + padding, 270 + padding, (500 - (padding * 2)) * value, 50 - (padding * 2));
 
       assetText.setText('Loading asset: ' + file.key);
       percentText.setText((value * 100).toFixed(2) + '%');
