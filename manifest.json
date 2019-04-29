@@ -8,6 +8,10 @@
       "file": "start-shopkeeper.png",
       "size": 41702
     },
+    "customer": {
+      "file": "sill.png",
+      "size": 41702
+    },
     "blood-shop-keeper": {
       "file": "blood-shopkeeper.png",
       "size": 48118

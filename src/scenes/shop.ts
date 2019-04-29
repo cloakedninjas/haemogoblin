@@ -24,6 +24,7 @@ export class Shop extends Scene {
   potionsAvailable: number;
   potions: Phaser.GameObjects.Image[];
   bloodMeter: Bar;
+  customer: Phaser.GameObjects.Sprite;
 
   constructor() {
     super({
@@ -103,6 +104,12 @@ export class Shop extends Scene {
       coinjar.setOrigin(0.5, 1);
 
       this.setCoinJarMask();
+
+      if (this.stage !== Shop.STAGE_FIRST) {
+        this.time.addEvent({
+          delay: 1000, callback: this.createCustomer, callbackScope: this
+        });
+      }
     }
   }
 
@@ -127,6 +134,98 @@ export class Shop extends Scene {
     const potion = this.add.image(x, y, 'potion');
     potion.depth = 1;
     this.potions.push(potion);
+  }
+
+  buyPotion() {
+    const potion = this.potions.pop();
+    potion.destroy();
+
+    if (this.potions.length === 0) {
+
+      this.time.addEvent({
+        delay: 800,
+        callback: this.customerWalk,
+        callbackScope: this
+      });
+
+      //this.customerWalk(false);
+    }
+  }
+
+  createCustomer() {
+    this.customer = this.add.sprite(-300, 1100, 'customer');
+    this.customer.setOrigin(0.5, 1);
+    this.customer.depth = 4;
+    this.customer.angle = -4;
+    this.customer.setScale(0.8);
+
+    this.customerWalk(true);
+  }
+
+  customerWalk(walkIn?: boolean) {
+    const walkDuration = 2000;
+    const steps = 6;
+    const stepDuration = walkDuration / steps;
+    const angle = 4;
+
+    if (walkIn) {
+      this.tweens.add({
+        targets: this.customer,
+        x: 250,
+        y: 900,
+        duration: walkDuration
+      });
+
+      // setup potion purchase
+      this.time.addEvent({
+        delay: walkDuration + 1000,
+        callback: () => {
+          this.buyPotion();
+
+          this.time.addEvent({
+            delay: 500,
+            repeat: this.potions.length - 1,
+            callback: this.buyPotion,
+            callbackScope: this
+          });
+        },
+      });
+    } else {
+      this.customer.flipX = true;
+      this.tweens.add({
+        targets: this.customer,
+        x: -300,
+        y: 1100,
+        duration: walkDuration
+      });
+
+      // setup scene end
+      this.time.addEvent({
+        delay: walkDuration + 1000,
+        callback: () => {
+          console.log(' endscene');
+        },
+      });
+    }
+
+    this.tweens.add({
+      targets: this.customer,
+      angle: angle,
+      ease: 'Sine.easeOut',
+      duration: (stepDuration),
+      yoyo: true,
+      repeat: (steps / 2) - 1,
+      onComplete: () => {
+        this.tweens.add({
+          targets: this.customer,
+          angle: 0,
+          ease: 'Quad.easeOut',
+          duration: stepDuration
+        });
+      }
+    });
+
+
   }
 
   onBloodPump() {
