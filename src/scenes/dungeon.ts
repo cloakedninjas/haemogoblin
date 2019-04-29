@@ -37,6 +37,7 @@ export class Dungeon extends Scene {
   game: Game;
   map: number[][];
   mapBg: Phaser.GameObjects.Image;
+  grid: Phaser.GameObjects.Image;
   heroPath: Phaser.Curves.Path;
   heroes: Hero[];
   heroesRemaining: number;
@@ -86,6 +87,10 @@ export class Dungeon extends Scene {
 
     this.mapBg = this.add.image(0, 0, 'map');
     this.mapBg.setOrigin(0, 0);
+
+    this.grid = this.add.image(0, 0, 'grid');
+    this.grid.setOrigin(0, 0);
+    this.grid.setVisible(false);
 
     // define hero path
 
@@ -270,6 +275,8 @@ export class Dungeon extends Scene {
   }
 
   onObjectDown(pointer: Pointer, gameObject: GameObject) {
+    this.grid.setVisible(true);
+
     if (gameObject === this.trapButton) {
       this.createTrap();
     } else if (gameObject === this.towerButton) {
@@ -278,6 +285,7 @@ export class Dungeon extends Scene {
   }
 
   onObjectUp(pointer: Pointer) {
+    this.grid.setVisible(false);
     if (this.newStructure) {
       const {x, y} = this.pixelToTile(pointer.x, pointer.y);
 

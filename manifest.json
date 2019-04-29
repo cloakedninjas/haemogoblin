@@ -41,7 +41,11 @@
       "size": 5492
     },
     "map": {
-      "file": "map template.png",
+      "file": "map-template.png",
+      "size": 27631
+    },
+    "grid": {
+      "file": "grid.png",
       "size": 27631
     },
     "ui-bar": {

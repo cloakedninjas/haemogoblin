@@ -9,6 +9,7 @@ export class Hero extends GameObjects.Sprite {
   static SLOW_RECOVERY_TIME: number = 3500;
   static STAMINA_DRAIN_WALK: number = 0.05;
   static STAMINA_DRAIN_ATTACK: number = 6;
+  static STAMINA_DRAIN_TOWER: number = 3;
   static ATTACK_DELAY: number = 1000;
   static ATTACK_MIN_DAMAGE: number = 6;
   static ATTACK_MAX_DAMAGE: number = 9;
@@ -244,6 +245,7 @@ export class Hero extends GameObjects.Sprite {
   slow() {
     this.slowed = true;
     this.resetSlowTimer();
+    this.reduceStamina(Hero.STAMINA_DRAIN_TOWER);
     this.slowTimer.paused = false;
   }
 
