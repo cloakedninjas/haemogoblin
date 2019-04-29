@@ -25,8 +25,8 @@ export class Dungeon extends Scene {
 
   static BLOOD_COLLECT_RATIO: number = 0.2;
 
-  static COST_TRAP: number = 60;
-  static COST_TOWER: number = 80;
+  static COST_TRAP: number = 50;
+  static COST_TOWER: number = 60;
 
   static PLAYER_MAX_HEALTH: number = 100;
 
@@ -200,13 +200,14 @@ export class Dungeon extends Scene {
 
     // TODO create spawn system
 
-    //setTimeout(this.spawnHero.bind(this), 5000);
+    //setTimeout(this.spawnHero.bind(this), 3000);
   }
 
   update(time, delta) {
     // check for win condition
     if (this.heroes.length === 0 && this.heroesRemaining === 0) {
       // TODO win banner
+      console.log(this.bloodCollected, this.playerHealth);
       this.scene.start('ShopScene', {
         stage: Shop.STAGE_PUMP,
         gold: this.gold,
@@ -314,6 +315,8 @@ export class Dungeon extends Scene {
   collectBlood(damage: number) {
     const bloodQty = damage * Dungeon.BLOOD_COLLECT_RATIO;
     const bottle = this.filledBloodBottle;
+
+    console.log(bloodQty);
 
     this.bloodCollected += bloodQty;
 

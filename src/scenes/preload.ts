@@ -168,7 +168,7 @@ export class Preload extends Scene {
 
     this.scene.start('ShopScene', {
       stage: Shop.STAGE_PUMP,
-      gold: 190,
+      gold: 170,
       blood: 19
     });
 

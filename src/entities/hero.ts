@@ -6,11 +6,12 @@ import {Bar} from "../lib/bar";
 export class Hero extends GameObjects.Sprite {
   static MOVE_SPEED: number = 0.4;
   static MOVE_SPEED_SLOW: number = 0.2;
+  static SLOW_RECOVERY_TIME: number = 3500;
   static STAMINA_DRAIN_WALK: number = 0.05;
   static STAMINA_DRAIN_ATTACK: number = 6;
   static ATTACK_DELAY: number = 1000;
-  static ATTACK_MIN_DAMAGE: number = 7;
-  static ATTACK_MAX_DAMAGE: number = 10;
+  static ATTACK_MIN_DAMAGE: number = 6;
+  static ATTACK_MAX_DAMAGE: number = 9;
 
   static ACTION_WALKING: number = 1;
   static ACTION_ATTACKING: number = 2;
@@ -49,10 +50,6 @@ export class Hero extends GameObjects.Sprite {
       y: 0
     };
 
-    this.slowTimer = this.scene.time.addEvent({
-      delay: 3000, callback: this.removeSlow, callbackScope: this, paused: true, loop: true
-    });
-
     this.healtBar = new Bar(scene, {
       fillColour: 0xff0000,
       fillPercent: 1,
@@ -70,6 +67,8 @@ export class Hero extends GameObjects.Sprite {
     });
 
     this.scene.add.existing(this.staminaBar);
+
+    this.resetSlowTimer();
   }
 
   startOnPath() {
@@ -235,7 +234,18 @@ export class Hero extends GameObjects.Sprite {
 
   slow() {
     this.slowed = true;
+    this.resetSlowTimer();
     this.slowTimer.paused = false;
+  }
+
+  resetSlowTimer() {
+    if (this.slowTimer) {
+      this.slowTimer.destroy();
+    }
+
+    this.slowTimer = this.scene.time.addEvent({
+      delay: Hero.SLOW_RECOVERY_TIME, callback: this.removeSlow, callbackScope: this, paused: true, loop: true
+    });
   }
 
   removeSlow() {

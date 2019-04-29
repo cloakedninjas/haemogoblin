@@ -4,6 +4,8 @@ import {Hero} from "./hero";
 import Sprite = Phaser.GameObjects.Sprite;
 
 export class Tower extends Structure {
+  static ATTACK_DELAY: number = 2000;
+
   placed: boolean;
   web: Sprite;
 
@@ -61,7 +63,7 @@ export class Tower extends Structure {
       this.canAttack = false;
 
       this.attackTimer = this.scene.time.addEvent({
-        delay: 2000, callback: this.refreshAttack, callbackScope: this
+        delay: Tower.ATTACK_DELAY, callback: this.refreshAttack, callbackScope: this
       });
     }
   }

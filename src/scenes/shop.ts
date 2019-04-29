@@ -39,7 +39,7 @@ export class Shop extends Scene {
       this.gold = 100;
       this.potionsAvailable = Shop.START_POTIONS;
     } else if (this.stage === Shop.STAGE_PUMP) {
-      this.blood = 30;
+      this.blood = data.blood;
       this.gold = data.gold;
     } else if (this.stage === Shop.STAGE_SELL) {
       this.gold = data.gold;
@@ -155,9 +155,11 @@ export class Shop extends Scene {
 
   buyPotion() {
     const potion = this.potions.pop();
-    potion.destroy();
 
-    this.addGold(Shop.POTION_COST);
+    if (potion) {
+      potion.destroy();
+      this.addGold(Shop.POTION_COST);
+    }
 
     if (this.potions.length === 0) {
       this.time.addEvent({
@@ -220,6 +222,7 @@ export class Shop extends Scene {
         delay: walkDuration + 1000,
         callback: () => {
           // TODO add transition
+          // TODO - add gold check for win condition
           this.scene.start('DungeonScene', {
             playerHealth: this.blood,
             gold: this.gold
