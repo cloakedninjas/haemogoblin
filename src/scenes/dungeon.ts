@@ -18,16 +18,14 @@ export class Dungeon extends Scene {
   static GRID_OFFSET_X: number = 145;
   static GRID_OFFSET_Y: number = 35;
   static MAP_WIDTH: number = 11;
-  static MAP_HEIGHT: number = 6;
 
   static TRAP_PLACEABLE: number = 0;
   static TOWER_PLACEABLE: number = 1;
-  static NOT_PLACEABLE: number = 2;
 
   static BLOOD_COLLECT_RATIO: number = 0.2;
 
-  static COST_TRAP: number = 50;
-  static COST_TOWER: number = 60;
+  static COST_TRAP: number = 60;
+  static COST_TOWER: number = 40;
 
   static PLAYER_MAX_HEALTH: number = 100;
 
@@ -238,7 +236,6 @@ export class Dungeon extends Scene {
   update(time, delta) {
     // check for win condition
     if (this.heroes.length === 0 && this.heroesRemaining === 0) {
-      // TODO win banner
       this.scene.start('ShopScene', {
         stage: Shop.STAGE_PUMP,
         gold: this.gold,
@@ -401,8 +398,9 @@ export class Dungeon extends Scene {
     });
 
     if (this.playerHealth <= 0) {
-      console.log('game over!');
-      this.scene.stop();
+      this.scene.start('ResultScene', {
+        winCondition: false
+      });
     }
   }
 

@@ -191,9 +191,7 @@ export class Preload extends Scene {
     });*/
 
     this.scene.start('ShopScene', {
-      stage: Shop.STAGE_FIRST,
-      gold: 170,
-      blood: 19
+      stage: Shop.STAGE_FIRST
     });
 
     /*this.scene.start('DungeonScene', {

@@ -2,7 +2,7 @@ import Scene = Phaser.Scene;
 import {Structure} from './structure';
 
 export class Trap extends Structure {
-  static DAMAGE: number = 15;
+  static DAMAGE: number = 10;
   static ATTACK_DELAY: number = 800;
 
   sounds: Phaser.Sound.BaseSound[];

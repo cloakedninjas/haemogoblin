@@ -11,7 +11,7 @@ export class Shop extends Scene {
 
   static COIN_START_Y: number = 575;
   static GOLD_START: number = 20;
-  static GOLD_WIN: number = 600;
+  static GOLD_WIN: number = 800;
   static POTION_COST: number = 50;
   static START_POTIONS: number = 7;
   static BLOOD_PUMP_AMOUNT: number = 10;
@@ -45,6 +45,7 @@ export class Shop extends Scene {
     this.stage = data.stage;
 
     if (this.stage === Shop.STAGE_FIRST) {
+      this.blood = 100;
       this.gold = 100;
       this.potionsAvailable = Shop.START_POTIONS;
     } else if (this.stage === Shop.STAGE_PUMP) {
@@ -326,6 +327,7 @@ export class Shop extends Scene {
         duration: walkDuration,
         onComplete: () => {
           this.sounds['door-bell'].play();
+          this.shopKeeper.setTexture('angry-shop-keeper');
         }
       });
 
@@ -335,7 +337,7 @@ export class Shop extends Scene {
         callback: () => {
           if (this.gold >= Shop.GOLD_WIN) {
             this.scene.start('ResultScene', {
-              stage: Shop.STAGE_FIRST
+              winCondition: true
             });
           } else {
             this.game.stopMusic();

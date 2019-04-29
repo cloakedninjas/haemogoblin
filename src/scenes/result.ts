@@ -21,6 +21,7 @@ export class Result extends Scene {
 
     if (this.winCondition) {
       bg = this.add.image(0, 0, 'victory');
+      this.game.playMusic('victory');
     } else {
       bg = this.add.image(0, 0, 'defeat');
     }
@@ -34,6 +35,6 @@ export class Result extends Scene {
       this.scene.start('ShopScene', {
         stage: Shop.STAGE_FIRST
       });
-    })
+    });
   }
 }
