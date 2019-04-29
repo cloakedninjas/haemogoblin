@@ -187,6 +187,18 @@
     "hero-teleport": {
       "file": "hero-teleport.mp3",
       "size": 41702
+    },
+    "anna-im-a-spider": {
+      "file": "anna-im-a-spider.mp3",
+      "size": 41702
+    },
+    "anna-i-go-poik": {
+      "file": "anna-i-go-poik.mp3",
+      "size": 41702
+    },
+    "anna-poik": {
+      "file": "anna-poik.mp3",
+      "size": 41702
     }
   }
 }

@@ -27,11 +27,15 @@ export class Shop extends Scene {
   bloodMeter: Bar;
   customer: Phaser.GameObjects.Sprite;
   sounds: Record<string, Phaser.Sound.BaseSound>;
+  creditHitArea: Record<string, Phaser.GameObjects.Rectangle>;
+  spiderClickCount: number;
 
   constructor() {
     super({
       key: 'ShopScene',
     });
+
+    this.spiderClickCount = 0;
   }
 
   init(data) {
@@ -129,7 +133,38 @@ export class Shop extends Scene {
         this.time.addEvent({
           delay: 1000, callback: this.createCustomer, callbackScope: this
         });
+      } else {
+        this.creditHitArea = {
+          'cloakedninjas': this.add.rectangle(321, 653, 249, 50),
+          'treslapin': this.add.rectangle(488, 611, 179, 49),
+          'thedorkulon': this.add.rectangle(184, 597, 270, 42)
+        };
+
+        for (let user in this.creditHitArea) {
+          this.creditHitArea[user].setInteractive();
+          this.creditHitArea[user].setOrigin(0 ,0);
+
+          this.creditHitArea[user].on('pointerdown', () => {
+            window.open('https://twitter.com/' + user);
+          });
+        }
       }
+
+      const spider = this.add.rectangle(1050, 465, 40, 41, 0xff0000, 0.5);
+      spider.setInteractive();
+      spider.setOrigin(0 ,0);
+
+      spider.on('pointerdown', () => {
+        this.spiderClickCount++;
+
+        if (this.spiderClickCount === 5) {
+          this.sound.add('anna-im-a-spider').play();
+        } else if (this.spiderClickCount === 10) {
+          this.sound.add('anna-i-go-poik').play();
+        } else if (this.spiderClickCount > 10 && this.spiderClickCount % 5 === 0) {
+          this.sound.add('anna-poik').play();
+        }
+      });
     }
 
     this.sounds = {
