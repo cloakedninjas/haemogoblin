@@ -4,7 +4,7 @@ import TimerEvent = Phaser.Time.TimerEvent;
 import {Bar} from '../lib/bar';
 
 export class Hero extends GameObjects.Sprite {
-  static MOVE_SPEED: number = 0.4;
+  static MOVE_SPEED: number = 1.4;
   static MOVE_SPEED_SLOW: number = 0.2;
   static SLOW_RECOVERY_TIME: number = 3500;
   static STAMINA_DRAIN_WALK: number = 0.05;
@@ -71,6 +71,8 @@ export class Hero extends GameObjects.Sprite {
 
     this.sounds = {
       'hero-teleport': this.scene.sound.add('hero-teleport'),
+      'player-hit-1': this.scene.sound.add('player-ouch-1'),
+      'player-hit-2': this.scene.sound.add('player-ouch-2'),
     };
 
     for (let i = 1; i <= 4; i++) {
@@ -156,16 +158,7 @@ export class Hero extends GameObjects.Sprite {
 
       case Hero.ACTION_ATTACKING:
         if (this.anims.currentAnim.key !== 'hero-attack') {
-          this.anims.play('hero-attack', true)
-            .on('animationcomplete', function () {
-              if (this.tryToAttack()) {
-                this.scene.time.addEvent({
-                  delay: Hero.ATTACK_DELAY, callback: function () {
-                    this.anims.play('hero-attack', true);
-                  }, callbackScope: this
-                });
-              }
-            }, this);
+          this.tryToAttack();
         }
         break;
 
@@ -268,17 +261,28 @@ export class Hero extends GameObjects.Sprite {
     this.slowed = false;
   }
 
-  tryToAttack(): boolean {
+  tryToAttack() {
     if (this.stamina >= Hero.STAMINA_DRAIN_ATTACK) {
+
+      // delay SFX but a bit
+      this.scene.time.addEvent({
+        delay: 300, callback: () => {
+          this.sounds['player-hit-' + Phaser.Math.Between(1,2)].play();
+        }
+      });
+
+      this.anims.play('hero-attack', true);
+
       this.reduceStamina(Hero.STAMINA_DRAIN_ATTACK);
       this.emit(Hero.EVENT_ATTACK, {
         damage: Phaser.Math.Between(Hero.ATTACK_MIN_DAMAGE, Hero.ATTACK_MAX_DAMAGE)
       });
 
-      return true;
+      this.scene.time.addEvent({
+        delay: Hero.ATTACK_DELAY, callback: this.tryToAttack, callbackScope: this
+      });
     } else {
      this.action = Hero.ACTION_LEAVING;
-     return false;
     }
   }
 

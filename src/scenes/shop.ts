@@ -150,7 +150,7 @@ export class Shop extends Scene {
         }
       }
 
-      const spider = this.add.rectangle(1050, 465, 40, 41, 0xff0000, 0.5);
+      const spider = this.add.rectangle(1050, 465, 40, 41);
       spider.setInteractive();
       spider.setOrigin(0 ,0);
 

@@ -206,7 +206,7 @@ export class Dungeon extends Scene {
 
     this.sounds = {
       'ui-select': this.sound.add('button-select'),
-      'ui-place': this.sound.add('button-place'),
+      'ui-place': this.sound.add('button-place')
     };
 
     this.game.playMusic('dungeon');
