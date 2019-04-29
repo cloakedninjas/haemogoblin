@@ -3,6 +3,7 @@ import {Structure} from './structure';
 
 export class Trap extends Structure {
   static DAMAGE: number = 15;
+  static ATTACK_DELAY: number = 800;
 
   sounds: Phaser.Sound.BaseSound[];
 
@@ -21,7 +22,7 @@ export class Trap extends Structure {
       this.canAttack = false;
 
       this.attackTimer = this.scene.time.addEvent({
-        delay: 1000, callback: this.refreshAttack, callbackScope: this
+        delay: Trap.ATTACK_DELAY, callback: this.refreshAttack, callbackScope: this
       });
     }
   }

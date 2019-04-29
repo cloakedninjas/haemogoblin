@@ -31,6 +31,9 @@ export class Dungeon extends Scene {
 
   static PLAYER_MAX_HEALTH: number = 100;
 
+  static MIN_DELAY_SPAWN_HERO: number = 2000;
+  static MAX_DELAY_SPAWN_HERO: number = 5000;
+
   game: Game;
   map: number[][];
   mapBg: Phaser.GameObjects.Image;
@@ -206,14 +209,6 @@ export class Dungeon extends Scene {
 
     this.input.on('gameobjectup', this.onObjectUp.bind(this));
 
-    this.heroesRemaining = 1;
-
-    this.spawnHero();
-
-    // TODO create spawn system
-
-    //setTimeout(this.spawnHero.bind(this), 3000);
-
     this.sounds = {
       'ui-select': this.sound.add('button-select'),
       'ui-place': this.sound.add('button-place')
@@ -221,6 +216,17 @@ export class Dungeon extends Scene {
 
     this.transition.open(() => {
       this.game.playMusic('dungeon');
+    });
+
+    // start hero spawning
+
+    this.heroesRemaining = Math.ceil(this.gold / (Dungeon.COST_TOWER + Dungeon.COST_TRAP));
+    //this.heroesRemaining = Phaser.Math.Between(3, 6);
+
+    this.time.addEvent({
+      delay: Phaser.Math.Between(Dungeon.MIN_DELAY_SPAWN_HERO, Dungeon.MAX_DELAY_SPAWN_HERO), callback: () => {
+        this.spawnHero();
+      }
     });
   }
 
@@ -296,6 +302,14 @@ export class Dungeon extends Scene {
     this.add.existing(hero);
 
     this.heroesRemaining--;
+
+    if (this.heroesRemaining) {
+      this.time.addEvent({
+        delay: Phaser.Math.Between(Dungeon.MIN_DELAY_SPAWN_HERO, Dungeon.MAX_DELAY_SPAWN_HERO), callback: () => {
+          this.spawnHero();
+        }
+      });
+    }
   }
 
   createTrap() {
