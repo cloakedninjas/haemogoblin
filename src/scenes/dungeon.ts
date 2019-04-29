@@ -65,9 +65,9 @@ export class Dungeon extends Scene {
     ];
   }
 
-  init() {
-    this.playerHealth = 20;
-    this.gold = 250;
+  init(data) {
+    this.playerHealth = data.playerHealth;
+    this.gold = data.gold;
   }
 
   create() {

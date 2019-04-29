@@ -43,6 +43,7 @@ export class Shop extends Scene {
     } else if (this.stage === Shop.STAGE_SELL) {
       this.gold = data.gold;
       this.potionsAvailable = data.potionsAvailable;
+      this.blood = data.blood;
     }
   }
 
@@ -203,8 +204,12 @@ export class Shop extends Scene {
       this.time.addEvent({
         delay: walkDuration + 1000,
         callback: () => {
-          console.log(' endscene');
-        },
+          // TODO add transition
+          this.scene.start('DungeonScene', {
+            playerHealth: this.blood,
+            gold: this.gold
+          });
+        }
       });
     }
 
