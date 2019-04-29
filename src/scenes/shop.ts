@@ -67,12 +67,13 @@ export class Shop extends Scene {
 
       this.bloodMeter = new Bar(this, {
         fillPercent: this.blood / Dungeon.PLAYER_MAX_HEALTH,
-        fillColour: 0xffff00,
+        fillColour: 0x5f080e,
         width: 80,
         height: 24
       });
       this.bloodMeter.x = 322;
       this.bloodMeter.y = 450;
+      this.bloodMeter.depth = 2;
       this.add.existing(this.bloodMeter);
 
       this.bloodPump = this.add.sprite(345, 360, 'blood-pump');
