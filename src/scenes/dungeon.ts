@@ -149,11 +149,11 @@ export class Dungeon extends Scene {
     this.healthBar = new Bar(this, {
       fillPercent: this.playerHealth / Dungeon.PLAYER_MAX_HEALTH,
       fillColour: 0xff0000,
-      width: 150,
+      width: 77,
       height: 20
     });
-    this.healthBar.x = 10;
-    this.healthBar.y = 10;
+    this.healthBar.x = 152;
+    this.healthBar.y = 420;
 
     this.add.existing(this.healthBar);
 
