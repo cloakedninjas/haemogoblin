@@ -11,7 +11,7 @@ export class Shop extends Scene {
 
   static COIN_START_Y: number = 575;
   static GOLD_START: number = 20;
-  static GOLD_WIN: number = 800;
+  static GOLD_WIN: number = 600;
   static POTION_COST: number = 50;
   static START_POTIONS: number = 7;
   static BLOOD_PUMP_AMOUNT: number = 10;

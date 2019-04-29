@@ -4,7 +4,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const DIST_DIR = path.resolve(__dirname, 'dist');
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   entry: './src/app.ts',
   module: {
     rules: [
@@ -25,6 +25,7 @@ module.exports = {
   plugins: [
     new CopyPlugin([
       {from: 'src/index.html', to: DIST_DIR},
+      {from: 'assets', to: DIST_DIR + '/assets'},
     ]),
   ]
 };

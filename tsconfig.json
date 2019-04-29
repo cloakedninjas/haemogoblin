@@ -3,7 +3,7 @@
     "target": "es5",
     "sourceMap": false,
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": true
   },
   "files": [
     "node_modules/phaser3-docs/typescript/phaser.d.ts"

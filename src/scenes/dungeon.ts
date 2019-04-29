@@ -24,8 +24,8 @@ export class Dungeon extends Scene {
 
   static BLOOD_COLLECT_RATIO: number = 0.2;
 
-  static COST_TRAP: number = 60;
-  static COST_TOWER: number = 40;
+  static COST_TRAP: number = 90;
+  static COST_TOWER: number = 10;
 
   static PLAYER_MAX_HEALTH: number = 100;
 
