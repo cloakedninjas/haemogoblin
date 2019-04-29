@@ -1,5 +1,6 @@
 import {Scene} from 'phaser';
 import * as manifest from '../../manifest.json';
+import {Shop} from "./shop";
 
 const MB = 1024 * 1024;
 
@@ -122,6 +123,12 @@ export class Preload extends Scene {
 
   create() {
     this.anims.create({
+      key: 'blood-pump',
+      frames: this.anims.generateFrameNumbers('blood-pump', {start: 0, end: 5}),
+      frameRate: 6
+    });
+
+    this.anims.create({
       key: 'hero-down-walk',
       frames: this.anims.generateFrameNumbers('hero-down-walk', {start: 0, end: 2}),
       frameRate: 6,
@@ -159,9 +166,8 @@ export class Preload extends Scene {
       frameRate: 8,
     });
 
-
     this.scene.start('ShopScene', {
-      firstTime: true
+      stage: Shop.STAGE_PUMP
     });
   }
 }

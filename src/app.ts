@@ -14,6 +14,10 @@ const config: GameConfig = {
     parent: 'game-container',
     width: 1280,
     height: 720,
+    max: {
+      width: 1280,
+      height: 720,
+    }
   },
 };
 

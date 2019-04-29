@@ -8,12 +8,20 @@
       "file": "start-shopkeeper.png",
       "size": 0
     },
+    "blood-shop-keeper": {
+      "file": "blood-shopkeeper.png",
+      "size": 0
+    },
     "coinjar": {
       "file": "coinjar.png",
       "size": 0
     },
     "coins": {
       "file": "coins.png",
+      "size": 0
+    },
+    "potion": {
+      "file": "potion.png",
       "size": 0
     },
     "map": {
@@ -34,6 +42,13 @@
     }
   },
   "spritesheet": {
+    "blood-pump": {
+      "file": "blood-pump.png",
+      "frameConfig": {
+        "frameWidth": 370,
+        "frameHeight": 296
+      }
+    },
     "hero-down-walk": {
       "file": "hero-down-walk.png",
       "frameConfig": {
