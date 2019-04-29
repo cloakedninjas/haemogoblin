@@ -41,6 +41,7 @@ export class Shop extends Scene {
     } else if (this.stage === Shop.STAGE_PUMP) {
       this.blood = 30;
     } else if (this.stage === Shop.STAGE_SELL) {
+      this.gold = data.gold;
       this.potionsAvailable = data.potionsAvailable;
     }
   }
@@ -122,8 +123,8 @@ export class Shop extends Scene {
     this.coinStack.setCrop(0, 0, this.coinStack.width, fillSize);
   }
 
-  setGold(gold: number) {
-    this.gold = gold;
+  addGold(gold: number) {
+    this.gold += gold;
     this.setCoinJarMask();
   }
 
@@ -140,15 +141,14 @@ export class Shop extends Scene {
     const potion = this.potions.pop();
     potion.destroy();
 
-    if (this.potions.length === 0) {
+    this.addGold(Shop.POTION_COST);
 
+    if (this.potions.length === 0) {
       this.time.addEvent({
         delay: 800,
         callback: this.customerWalk,
         callbackScope: this
       });
-
-      //this.customerWalk(false);
     }
   }
 
