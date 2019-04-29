@@ -48,6 +48,7 @@ export class Dungeon extends Scene {
   healthBar: Bar;
   goldCounter: Text;
   sounds: Record<string, Phaser.Sound.BaseSound>;
+  shopKeeper: Phaser.GameObjects.Sprite;
 
   constructor() {
     super({
@@ -89,7 +90,7 @@ export class Dungeon extends Scene {
       [135, 315],
       [675, 315],
       [675, 495],
-      [45, 495],
+      [125, 495],
     ];
 
     coords.forEach((coord, index) => {
@@ -117,6 +118,10 @@ export class Dungeon extends Scene {
     this.mapBg.setInteractive();
 
     this.input.on('gameobjectdown', this.onObjectDown.bind(this));
+
+    this.shopKeeper = this.add.sprite(189, 567, 'shop-keeper-goblin');
+    this.shopKeeper.setOrigin(0.5, 1);
+    this.shopKeeper.anims.play('shop-keeper-dance');
 
     // ui
 
@@ -359,6 +364,14 @@ export class Dungeon extends Scene {
   onHeroAttack(data) {
     this.playerHealth -= data.damage;
     this.healthBar.setValue(this.playerHealth / Dungeon.PLAYER_MAX_HEALTH);
+
+    this.shopKeeper.anims.play('shop-keeper-hit');
+
+    this.time.addEvent({
+      delay: 300, callback: () => {
+        this.shopKeeper.anims.play('shop-keeper-dance');
+      }
+    });
 
     if (this.playerHealth <= 0) {
       console.log('game over!');

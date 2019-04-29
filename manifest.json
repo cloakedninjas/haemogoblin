@@ -113,6 +113,14 @@
         "frameHeight": 90
       },
       "size": 21098
+    },
+    "shop-keeper-goblin": {
+      "file": "shopkeeper-goblin.png",
+      "frameConfig": {
+        "frameWidth": 69,
+        "frameHeight": 138
+      },
+      "size": 21098
     }
   },
   "audio": {

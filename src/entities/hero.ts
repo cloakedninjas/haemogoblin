@@ -4,7 +4,7 @@ import TimerEvent = Phaser.Time.TimerEvent;
 import {Bar} from '../lib/bar';
 
 export class Hero extends GameObjects.Sprite {
-  static MOVE_SPEED: number = 1.4;
+  static MOVE_SPEED: number = 0.4;
   static MOVE_SPEED_SLOW: number = 0.2;
   static SLOW_RECOVERY_TIME: number = 3500;
   static STAMINA_DRAIN_WALK: number = 0.05;
@@ -268,15 +268,16 @@ export class Hero extends GameObjects.Sprite {
       this.scene.time.addEvent({
         delay: 300, callback: () => {
           this.sounds['player-hit-' + Phaser.Math.Between(1,2)].play();
+
+          this.emit(Hero.EVENT_ATTACK, {
+            damage: Phaser.Math.Between(Hero.ATTACK_MIN_DAMAGE, Hero.ATTACK_MAX_DAMAGE)
+          });
         }
       });
 
       this.anims.play('hero-attack', true);
 
       this.reduceStamina(Hero.STAMINA_DRAIN_ATTACK);
-      this.emit(Hero.EVENT_ATTACK, {
-        damage: Phaser.Math.Between(Hero.ATTACK_MIN_DAMAGE, Hero.ATTACK_MAX_DAMAGE)
-      });
 
       this.scene.time.addEvent({
         delay: Hero.ATTACK_DELAY, callback: this.tryToAttack, callbackScope: this

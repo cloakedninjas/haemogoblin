@@ -168,6 +168,19 @@ export class Preload extends Scene {
       frameRate: 8,
     });
 
+    this.anims.create({
+      key: 'shop-keeper-dance',
+      frames: this.anims.generateFrameNumbers('shop-keeper-goblin', {frames: [0, 1, 0, 2]}),
+      frameRate: 5,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'shop-keeper-hit',
+      frames: this.anims.generateFrameNumbers('shop-keeper-goblin', {frames: [0, 3, 3, 0]}),
+      frameRate: 8,
+    });
+
     this.game.initMusic();
 
     /*this.scene.start('ShopScene', {
@@ -178,7 +191,7 @@ export class Preload extends Scene {
 
     this.scene.start('DungeonScene', {
       gold: 190,
-      playerHealth: 19
+      playerHealth: 200
     });
   }
 }
