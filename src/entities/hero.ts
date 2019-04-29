@@ -31,6 +31,7 @@ export class Hero extends GameObjects.Sprite {
   action: number;
   healtBar: Bar;
   staminaBar: Bar;
+  sounds: Record<string, Phaser.Sound.BaseSound>;
 
   constructor(scene: Scene, x: number, y: number, path: Path) {
     super(scene, x, y, 'hero-down-walk');
@@ -67,6 +68,14 @@ export class Hero extends GameObjects.Sprite {
     });
 
     this.scene.add.existing(this.staminaBar);
+
+    this.sounds = {
+      'hero-teleport': this.scene.sound.add('hero-teleport'),
+    };
+
+    for (let i = 1; i <= 4; i++) {
+      this.sounds['hero-death-' + i] = this.scene.sound.add('hero-death-' + i);
+    }
 
     this.resetSlowTimer();
   }
@@ -163,6 +172,7 @@ export class Hero extends GameObjects.Sprite {
       case Hero.ACTION_LEAVING:
         if (this.anims.currentAnim.key !== 'hero-teleport') {
           this.anims.play('hero-teleport');
+          this.sounds['hero-teleport'].play();
 
           this.on('animationcomplete', () => {
             this.destroyBars();
@@ -226,6 +236,12 @@ export class Hero extends GameObjects.Sprite {
       if (this.health <= 0) {
         this.action = Hero.ACTION_DYING;
         this.destroyBars();
+
+        if (Math.random() > 0.95) {
+          this.sounds['hero-death-4'].play();
+        } else {
+          this.sounds['hero-death-' + Phaser.Math.Between(1, 3)].play();
+        }
       }
     }
 

@@ -147,6 +147,46 @@
     "shop-sale-4": {
       "file": "shop-sale-4.mp3",
       "size": 41702
+    },
+    "button-place": {
+      "file": "button-place.mp3",
+      "size": 41702
+    },
+    "button-select": {
+      "file": "button-select.mp3",
+      "size": 41702
+    },
+    "tower-attack": {
+      "file": "spider-fart.mp3",
+      "size": 41702
+    },
+    "spike-trap-1": {
+      "file": "spike-trap-1.mp3",
+      "size": 41702
+    },
+    "spike-trap-2": {
+      "file": "spike-trap-2.mp3",
+      "size": 41702
+    },
+    "hero-death-1": {
+      "file": "hero-death-1.mp3",
+      "size": 41702
+    },
+    "hero-death-2": {
+      "file": "hero-death-2.mp3",
+      "size": 41702
+    },
+    "hero-death-3": {
+      "file": "hero-death-3.mp3",
+      "size": 41702
+    },
+    "hero-death-4": {
+      "file": "hero-death-4.mp3",
+      "size": 41702
+    },
+    "hero-teleport": {
+      "file": "hero-teleport.mp3",
+      "size": 41702
     }
   }
 }

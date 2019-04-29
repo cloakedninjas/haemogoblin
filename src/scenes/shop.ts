@@ -134,7 +134,6 @@ export class Shop extends Scene {
 
     this.sounds = {
       'fill-bottle': this.sound.add('fill-bottle-short'),
-
     };
 
     for (let i = 1; i <= 4; i++) {

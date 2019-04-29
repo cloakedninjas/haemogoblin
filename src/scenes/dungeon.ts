@@ -47,6 +47,7 @@ export class Dungeon extends Scene {
   playerHealth: number;
   healthBar: Bar;
   goldCounter: Text;
+  sounds: Record<string, Phaser.Sound.BaseSound>;
 
   constructor() {
     super({
@@ -203,6 +204,11 @@ export class Dungeon extends Scene {
 
     //setTimeout(this.spawnHero.bind(this), 3000);
 
+    this.sounds = {
+      'ui-select': this.sound.add('button-select'),
+      'ui-place': this.sound.add('button-place'),
+    };
+
     this.game.playMusic('dungeon');
   }
 
@@ -210,7 +216,6 @@ export class Dungeon extends Scene {
     // check for win condition
     if (this.heroes.length === 0 && this.heroesRemaining === 0) {
       // TODO win banner
-      console.log(this.bloodCollected, this.playerHealth);
       this.scene.start('ShopScene', {
         stage: Shop.STAGE_PUMP,
         gold: this.gold,
@@ -285,6 +290,7 @@ export class Dungeon extends Scene {
     if (this.gold >= Dungeon.COST_TRAP) {
       this.newStructure = new Trap(this, 0, 0);
       this.add.existing(this.newStructure);
+      this.sounds['ui-select'].play();
     }
   }
 
@@ -292,6 +298,7 @@ export class Dungeon extends Scene {
     if (this.gold >= Dungeon.COST_TOWER) {
       this.newStructure = new Tower(this, 0, 0);
       this.add.existing(this.newStructure);
+      this.sounds['ui-select'].play();
     }
   }
 
@@ -313,6 +320,7 @@ export class Dungeon extends Scene {
     }
 
     this.goldCounter.setText(this.gold.toString());
+    this.sounds['ui-place'].play();
   }
 
   collectBlood(damage: number) {

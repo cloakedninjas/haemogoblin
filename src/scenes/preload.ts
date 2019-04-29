@@ -168,19 +168,17 @@ export class Preload extends Scene {
       frameRate: 8,
     });
 
-    this.game.initMusic()
+    this.game.initMusic();
 
-    this.scene.start('ShopScene', {
+    /*this.scene.start('ShopScene', {
       stage: Shop.STAGE_PUMP,
       gold: 170,
       blood: 19
-    });
+    });*/
 
-    /*
     this.scene.start('DungeonScene', {
       gold: 190,
       playerHealth: 19
     });
-     */
   }
 }

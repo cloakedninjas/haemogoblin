@@ -8,10 +8,12 @@ export class Tower extends Structure {
 
   placed: boolean;
   web: Sprite;
+  sfx: Phaser.Sound.BaseSound;
 
   constructor(scene: Scene, x: number, y: number) {
     super(scene, x, y, 'tower');
 
+    this.sfx = scene.sound.add('tower-attack');
     this.attackRange = 2;
     this.web = new Sprite(scene, x, y, 'spider-web');
     this.web.setVisible(false);
@@ -69,6 +71,7 @@ export class Tower extends Structure {
 
   attack(hero: Hero) {
     hero.slow();
+    this.sfx.play();
 
     this.web.setPosition(this.x, this.y);
     this.web.setVisible(true);
