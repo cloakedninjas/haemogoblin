@@ -168,15 +168,15 @@ export class Dungeon extends Scene {
 
     // price labels
 
-    this.add.text(520, 670, Dungeon.COST_TRAP.toString(), {
+    this.add.text(490, 660, Dungeon.COST_TRAP.toString(), {
       fontFamily: Game.DEFAULT_FONT,
-      fontSize: '20px',
+      fontSize: '26px',
       fill: '#000'
     });
 
-    this.add.text(750, 670, Dungeon.COST_TOWER.toString(), {
+    this.add.text(772, 660, Dungeon.COST_TOWER.toString(), {
       fontFamily: Game.DEFAULT_FONT,
-      fontSize: '20px',
+      fontSize: '26px',
       fill: '#000'
     });
 
