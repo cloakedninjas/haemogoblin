@@ -122,12 +122,15 @@ export class Shop extends Scene {
 
       this.shopKeeper = this.add.image(this.cameras.main.centerX, this.cameras.main.height, 'shop-keeper');
       this.shopKeeper.setOrigin(0.5, 1);
+      this.shopKeeper.depth = 2;
 
       this.coinStack = this.add.image(515, Shop.COIN_START_Y, 'coins');
       this.coinStack.setOrigin(0.5, 1);
+      this.coinStack.setDepth(2);
 
       const coinjar = this.add.image(515, 512, 'coinjar');
       coinjar.setOrigin(0.5, 1);
+      coinjar.setDepth(2);
 
       this.setCoinJarMask();
 
@@ -139,6 +142,7 @@ export class Shop extends Scene {
         const startButton = this.add.image(294, 515, 'play-btn');
         startButton.setOrigin(0.5, 1);
         startButton.setInteractive();
+        startButton.setDepth(3);
         startButton.on('pointerdown', () => {
           this.scene.start('ShopScene', {
             stage: Shop.STAGE_SELL,

@@ -183,6 +183,13 @@ export class Preload extends Scene {
 
     this.game.initMusic();
 
+    /*this.scene.start('ShopScene', {
+      stage: Shop.STAGE_SELL,
+      gold: 170,
+      blood: 19,
+      potionsAvailable: 9
+    });*/
+
     this.scene.start('ShopScene', {
       stage: Shop.STAGE_FIRST,
       gold: 170,
