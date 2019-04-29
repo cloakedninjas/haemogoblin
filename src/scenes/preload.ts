@@ -167,10 +167,16 @@ export class Preload extends Scene {
     });
 
     this.scene.start('ShopScene', {
-      stage: Shop.STAGE_SELL,
-      potionsAvailable: 5,
+      stage: Shop.STAGE_PUMP,
       gold: 190,
       blood: 19
     });
+
+    /*
+    this.scene.start('DungeonScene', {
+      gold: 190,
+      playerHealth: 19
+    });
+     */
   }
 }

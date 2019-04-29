@@ -10,6 +10,7 @@ import Graphics = Phaser.GameObjects.Graphics;
 import {Bar} from "../lib/bar";
 import Text = Phaser.GameObjects.Text;
 import {Game} from "../game";
+import {Shop} from "./shop";
 
 export class Dungeon extends Scene {
   static GRID_SIZE: number = 90;
@@ -33,6 +34,7 @@ export class Dungeon extends Scene {
   mapBg: Phaser.GameObjects.Image;
   heroPath: Phaser.Curves.Path;
   heroes: Hero[];
+  heroesRemaining: number;
   structures: Structure[][];
   newStructure: Structure;
   trapButton: Sprite;
@@ -76,7 +78,6 @@ export class Dungeon extends Scene {
 
     // define hero path
 
-    //this.graphics = this.add.graphics();
     this.heroPath = this.add.path(0, 0);
 
     const coords = [
@@ -193,12 +194,25 @@ export class Dungeon extends Scene {
 
     this.input.on('gameobjectup', this.onObjectUp.bind(this));
 
+    this.heroesRemaining = 1;
+
     this.spawnHero();
+
+    // TODO create spawn system
 
     //setTimeout(this.spawnHero.bind(this), 5000);
   }
 
   update(time, delta) {
+    // check for win condition
+    if (this.heroes.length === 0 && this.heroesRemaining === 0) {
+      // TODO win banner
+      this.scene.start('ShopScene', {
+        stage: Shop.STAGE_PUMP,
+        gold: this.gold,
+        blood: this.bloodCollected + this.playerHealth
+      });
+    }
     this.heroes.forEach((hero) => {
       const {x, y} = this.pixelToTile(hero.x, hero.y);
 
@@ -259,6 +273,8 @@ export class Dungeon extends Scene {
 
     this.heroes.push(hero);
     this.add.existing(hero);
+
+    this.heroesRemaining--;
   }
 
   createTrap() {

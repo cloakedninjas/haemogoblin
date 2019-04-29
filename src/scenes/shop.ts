@@ -40,6 +40,7 @@ export class Shop extends Scene {
       this.potionsAvailable = Shop.START_POTIONS;
     } else if (this.stage === Shop.STAGE_PUMP) {
       this.blood = 30;
+      this.gold = data.gold;
     } else if (this.stage === Shop.STAGE_SELL) {
       this.gold = data.gold;
       this.potionsAvailable = data.potionsAvailable;
@@ -89,6 +90,20 @@ export class Shop extends Scene {
         if (this.blood > Shop.BLOOD_PUMP_AMOUNT) {
           this.bloodPump.anims.play('blood-pump', true);
         }
+      });
+
+      // TODO - add proper button
+      const button = this.add.image(900, 600, 'coins');
+      button.setInteractive();
+      button.depth = 3;
+      button.on('pointerdown', () => {
+        // trigger sell scene
+        this.scene.start('ShopScene', {
+          stage: Shop.STAGE_SELL,
+          potionsAvailable: this.potions.length,
+          gold: this.gold,
+          blood: this.blood
+        });
       });
 
     } else {
